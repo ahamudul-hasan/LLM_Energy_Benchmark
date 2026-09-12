@@ -13,40 +13,37 @@
 |---|---|
 | Literature review | ✅ Done — 17 published references + TokenPowerBench (AAAI 2026), all arXiv-only preprints removed |
 | Gap analysis table | ✅ Done — 5 rows, matches trimmed reference list |
-| Methodology section | 🔶 In progress — draft exists, needs decisions below finalized before it's locked |
-| Hardware | 🔶 Personal/group GPU, RTX 3060–4090 range — **exact card not yet chosen** |
-| Experiments | ⬜ Not started |
-| Router design | ⬜ Not decided — rule-based lookup vs. trained classifier |
+| Methodology section | ✅ Finalized — Defined in AGENTS.md and README.md |
+| Hardware | ✅ Finalized — NVIDIA RTX 4060 (Ada Lovelace 8GB) & RTX 3060 Ti (Ampere 8GB) |
+| Measurement Harness | ✅ Done — `src/measure_energy.py` (NVML 50ms sampling, idle power drop, trapezoidal integration) |
+| Router design | ✅ Finalized — Host CPU feature pipeline (surface heuristics + `all-MiniLM-L6-v2`) + Logistic Regression / Random Forest |
+| Workload Benchmark | 🔶 In progress — 600 prompts (200/complexity tier across 6 datasets: SST-2, SQuAD v2.0, CNN/DailyMail, MNLI, GSM8K, HumanEval) |
 
 ---
 
-## 1. Outstanding decisions — resolve these *before* touching Phase 2
+## 1. Finalized Architecture & System Decisions
 
-These block real progress, so nail them down first, ideally in a 15-minute group call.
+All core hardware, model tier, and routing decisions are locked as specified in [AGENTS.md](file:///e:/UIU/Trimester%2012/Green/Project/LLM_Energy_Benchmark/AGENTS.md):
 
-### 1.1 Exact GPU and VRAM tier
-A 7–8B model needs ~14–16GB just for FP16 weights, before activations/KV-cache. Your quantization matrix depends entirely on which tier you land in:
+### 1.1 Dual GPU Hardware Platforms (8 GB VRAM Constraint)
+- **Platform A**: NVIDIA GeForce RTX 4060 (Ada Lovelace, 8 GB GDDR6, TSMC 4N, 115 W TDP).
+- **Platform B**: NVIDIA GeForce RTX 3060 Ti (Ampere, 8 GB GDDR6, Samsung 8nm, 200 W TDP).
+- Enables evaluation of microarchitectural energy scaling ratio ($\eta = E_{\text{RTX 3060 Ti}} / E_{\text{RTX 4060}}$).
 
-| VRAM | FP16 (7–8B) | 8-bit | 4-bit | Implication |
-|---|---|---|---|---|
-| 12GB (3060 12GB, 3080 12GB) | ❌ won't fit | ✅ fits | ✅ fits | Drop FP16 tier, or drop to a 3–4B model class for the "baseline" precision |
-| 16GB (4060 Ti 16GB, 4070 Ti Super, 4080) | ⚠️ fits, thin headroom | ✅ fits | ✅ fits | Workable, but expect to lower batch size / context length on FP16 runs |
-| 24GB (3090, 4090) | ✅ fits comfortably | ✅ fits | ✅ fits | No compromises — full 3×3 model×quant matrix runs cleanly |
+### 1.2 Model Candidate Pool & Quantization Tiers (Ollama / GGUF)
+- **Tier 1 (Lightweight)**: `llama3.2:1b` (`Q8_0`, ~1.3 GB VRAM) — Target: Binary sentiment (SST-2), short fact extraction (SQuAD v2.0).
+- **Tier 2 (Intermediate)**: `llama3.2:3b` / `phi3.5:3.8b` (`Q4_K_M`, ~2.6–3.1 GB VRAM) — Target: Multi-sentence summarization (CNN/DailyMail), NLI (MNLI).
+- **Tier 3 (Heavyweight)**: `llama3.1:8b` / `mistral:7b` (`Q4_K_M`, ~5.2–5.8 GB VRAM) — Target: Math reasoning (GSM8K), code synthesis (HumanEval).
 
-**Action:** confirm the exact card today. If it's below 24GB, decide now whether to (a) drop FP16 as a tier and only compare 8-bit vs. 4-bit, or (b) swap one of the 7–8B models for a 3–4B model (e.g. Phi-3.5-mini, Qwen2.5-3B) so all three precision tiers are testable on all three models.
+### 1.3 Host-CPU Prompt Complexity Router
+- **Feature Extraction**: Token length, character count, code syntax flags (`def`, `class`, `import`, `curl`, SQL) + 384-d dense embeddings (`all-MiniLM-L6-v2`) on host CPU.
+- **Classifier**: Multi-class Logistic Regression ($L_2$) or Random Forest predicting target tier $\hat{y} \in \{1, 2, 3\}$.
+- **Target Overhead**: $\Delta t_{\text{route}} < 15\text{ ms}$.
 
-### 1.2 Single machine vs. split across members' GPUs
-**Recommendation: run every energy-measurement run on one machine.** Different GPUs draw different power for identical work, so if Member A's runs are on a 3060 and Member B's are on a 4090, your energy comparisons across models become confounded by hardware, not just model choice. Everyone can work in parallel on code, benchmark prep, router logic, and writing — but the actual power-logged inference runs should happen on whoever has the highest-VRAM card.
-
-**Action:** pick the "measurement machine" and give that person priority access for Phases 4–6.
-
-### 1.3 Router ambition
-**Recommendation (from our earlier discussion): build the rule-based lookup table as the real deliverable; treat the trained classifier as a stretch goal, not a parallel target.** Reasoning: the lookup table alone proves the core claim (route by measured energy/accuracy trade-off) with nothing extra to debug, and it's fully defensible within a course-project timeline. A trained classifier adds a second thing to validate (task-classification accuracy) on top of the router's actual energy savings — worth attempting only after the lookup version has full end-to-end results.
-
-**Action:** confirm with your teacher whether a trained classifier is explicitly expected, or whether a well-evaluated rule-based router is sufficient.
-
-### 1.4 Confirm final model list
-Once 1.1 is settled, lock the three base models. Working assumption unless changed: **Llama 3.1 8B, Mistral 7B, Qwen2.5 7B** (or their <16GB-friendly substitutes per 1.1).
+### 1.4 Power Measurement Invariants (`pynvml`)
+- **NVML Polling**: Background daemon thread sampling $P(t)$ every 50 ms (`time.sleep(0.05)`).
+- **Idle Power**: Mandatory pre-flight GPU cool-down and 3.0s baseline resting power profiling ($P_{\text{idle}}$).
+- **Net Energy**: Trapezoidal integration isolating dynamic energy: $E_{\text{net}} = E_{\text{total}} - (P_{\text{idle}} \times \Delta t_{\text{latency}})$.
 
 ---
 
