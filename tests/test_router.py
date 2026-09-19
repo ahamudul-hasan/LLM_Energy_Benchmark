@@ -34,6 +34,8 @@ class TestPromptRouter(unittest.TestCase):
         router_model_path = os.path.join("src", "router_model.joblib")
         if os.path.exists(router_model_path):
             router = PromptRouter(model_path=router_model_path)
+            # Warmup run to ensure sentence-transformer weights are pre-loaded
+            router.route("Warmup query")
             res = router.route("What is the capital of Bangladesh?")
 
             self.assertIn("tier_selected", res)

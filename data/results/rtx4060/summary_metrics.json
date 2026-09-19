@@ -1,0 +1,29 @@
+{
+  "evaluation_prompts_count": 12,
+  "quiescent_p_idle_watts": 54.1,
+  "static_tier3_total_energy_kj": 8.545,
+  "adaptive_router_total_energy_kj": 6.504,
+  "static_tier3_net_energy_joules": 2766.36,
+  "adaptive_router_net_energy_joules": 1922.88,
+  "energy_savings_percent": 30.49,
+  "static_tier3_mean_joules_per_token": 2.5777,
+  "adaptive_router_mean_joules_per_token": 1.579,
+  "static_tier3_quality_score": 0.8637,
+  "adaptive_router_quality_score": 0.78,
+  "quality_preservation_ratio_qpr": 90.31,
+  "mean_router_overhead_ms": 23.433,
+  "static_tier3_mean_latency_s": 8.902,
+  "adaptive_router_mean_latency_s": 7.057,
+  "static_tier3_mean_ttft_s": 5.229,
+  "adaptive_router_mean_ttft_s": 4.431,
+  "tier_distribution_counts": {
+    "2": 6,
+    "3": 4,
+    "1": 2
+  },
+  "tier_distribution_percentages": {
+    "Tier_2_pct": 50.0,
+    "Tier_3_pct": 33.3,
+    "Tier_1_pct": 16.7
+  }
+}

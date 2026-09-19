@@ -115,7 +115,10 @@ def train_and_calibrate():
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
     # 4. Model Candidates
-    clf_lr = LogisticRegression(C=1.0, max_iter=500, random_state=42)
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
+
+    clf_lr = make_pipeline(StandardScaler(), LogisticRegression(C=1.0, max_iter=1000, random_state=42))
     clf_rf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
 
     # 5. 5-Fold Cross Validation

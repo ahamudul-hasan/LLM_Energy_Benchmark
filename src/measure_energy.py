@@ -18,12 +18,40 @@ from typing import Dict, Any, List, Tuple, Optional
 # -----------------------------------------------------------------------------
 # NVML Hardware Availability Check
 # -----------------------------------------------------------------------------
+# NVML Hardware Availability Check & Helpers
+# -----------------------------------------------------------------------------
 NVML_AVAILABLE = False
+
+
+def get_gpu_power_watts(handle) -> Optional[float]:
+    """
+    Queries current GPU power draw in Watts.
+    Tries nvmlDeviceGetPowerUsage first; falls back to nvmlDeviceGetSamples
+    for GPUs / drivers where instantaneous usage returns NotSupported.
+    """
+    try:
+        mw = pynvml.nvmlDeviceGetPowerUsage(handle)
+        return mw / 1000.0
+    except Exception:
+        pass
+
+    try:
+        _, samples = pynvml.nvmlDeviceGetSamples(handle, pynvml.NVML_TOTAL_POWER_SAMPLES, 0)
+        if samples:
+            return samples[-1].sampleValue.uiVal / 1000.0
+    except Exception:
+        pass
+
+    return None
+
+
 try:
     import pynvml
     pynvml.nvmlInit()
+    _handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+    _test_p = get_gpu_power_watts(_handle)
     pynvml.nvmlShutdown()
-    NVML_AVAILABLE = True
+    NVML_AVAILABLE = (_test_p is not None)
 except Exception:
     NVML_AVAILABLE = False
 
@@ -51,10 +79,9 @@ class NVMLPowerSampler:
         while not self.stop_event.is_set():
             try:
                 t = time.perf_counter()
-                # pynvml returns power usage in milliwatts
-                mw = pynvml.nvmlDeviceGetPowerUsage(self.handle)
-                p_watts = mw / 1000.0
-                self.samples.append((t, p_watts))
+                p_watts = get_gpu_power_watts(self.handle)
+                if p_watts is not None:
+                    self.samples.append((t, p_watts))
             except Exception:
                 pass
             time.sleep(self.sampling_interval)
@@ -128,14 +155,18 @@ def measure_idle_power(
             pynvml.nvmlInit()
             handle = pynvml.nvmlDeviceGetHandleByIndex(0)
             while time.perf_counter() - start < seconds:
-                mw = pynvml.nvmlDeviceGetPowerUsage(handle)
-                readings.append(mw / 1000.0)
+                p_watts = get_gpu_power_watts(handle)
+                if p_watts is not None:
+                    readings.append(p_watts)
                 time.sleep(sampling_interval)
             pynvml.nvmlShutdown()
             if readings:
                 return sum(readings) / len(readings)
         except Exception:
             pass
+
+    if use_mock:
+        return 21.5 + random.uniform(-0.8, 0.8)
 
     # Fallback / Mock mode idle power profile (~21.5 Watts resting)
     while time.perf_counter() - start < seconds:
@@ -166,23 +197,29 @@ def run_inference_and_measure(
     model: str = "llama3.2:1b",
     ollama_url: str = "http://localhost:11434",
     mock: bool = False,
+    mock_power: Optional[bool] = None,
+    simulate: bool = False,
     cool_down_seconds: float = 3.0,
-    system_prompt: Optional[str] = None
+    system_prompt: Optional[str] = None,
+    p_idle: Optional[float] = None,
+    idle_seconds: float = 3.0
 ) -> Dict[str, Any]:
     """
     Executes an inference request against local Ollama server, monitors GPU power
     at 50ms intervals, and measures latency, TTFT, total energy, and net dynamic energy.
     """
-    use_mock = mock or (not NVML_AVAILABLE)
+    use_mock_power = (mock_power if mock_power is not None else mock) or (not NVML_AVAILABLE)
 
     # 1. Cool-down GPU to reach quiescent idle state
-    cool_down_gpu(cool_down_seconds)
+    if cool_down_seconds > 0:
+        cool_down_gpu(cool_down_seconds)
 
-    # 2. Profile baseline idle power
-    p_idle = measure_idle_power(seconds=3.0, use_mock=use_mock)
+    # 2. Profile baseline idle power if not provided
+    if p_idle is None:
+        p_idle = measure_idle_power(seconds=idle_seconds, use_mock=use_mock_power)
 
     # 3. Initialize background power monitor
-    if use_mock:
+    if use_mock_power:
         sampler = MockPowerSampler(sampling_interval=0.05, base_power_watts=85.0)
     else:
         sampler = NVMLPowerSampler(device_index=0, sampling_interval=0.05)
@@ -195,6 +232,35 @@ def run_inference_and_measure(
     full_response = []
     prompt_tokens = 0
     output_tokens = 0
+
+    # If simulate mode, simulate inference latency and response without network overhead
+    if simulate:
+        simulated_latency = 0.05 + random.uniform(0.01, 0.03)
+        time.sleep(simulated_latency)
+        end_time = time.perf_counter()
+        samples = sampler.stop()
+        total_energy = calculate_energy(samples)
+        latency = end_time - start_time
+        net_energy = max(0.0, total_energy - (p_idle * latency))
+
+        prompt_tokens = len(prompt.split())
+        output_tokens = random.randint(20, 60)
+        joules_per_token = (net_energy / output_tokens) if output_tokens > 0 else 0.0
+
+        return {
+            "test_id": f"eval_{int(time.time() * 1000)}",
+            "model_used": model,
+            "prompt_token_count": prompt_tokens,
+            "output_token_count": output_tokens,
+            "latency_seconds": round(latency, 4),
+            "ttft_seconds": round(latency * 0.2, 4),
+            "p_idle_watts": round(p_idle, 2),
+            "total_energy_joules": round(total_energy, 4),
+            "net_energy_joules": round(net_energy, 4),
+            "joules_per_token": round(joules_per_token, 4),
+            "nvml_used": not use_mock_power,
+            "response_text": f"Mock response for prompt in model {model}"
+        }
 
     payload = {
         "model": model,
@@ -233,7 +299,7 @@ def run_inference_and_measure(
             "total_energy_joules": round(total_energy, 4),
             "net_energy_joules": round(net_energy, 4),
             "joules_per_token": 0.0,
-            "nvml_used": not use_mock
+            "nvml_used": not use_mock_power
         }
 
     end_time = time.perf_counter()
@@ -265,7 +331,7 @@ def run_inference_and_measure(
         "total_energy_joules": round(total_energy, 4),
         "net_energy_joules": round(net_energy, 4),
         "joules_per_token": round(joules_per_token, 4),
-        "nvml_used": not use_mock,
+        "nvml_used": not use_mock_power,
         "response_text": response_text
     }
 
