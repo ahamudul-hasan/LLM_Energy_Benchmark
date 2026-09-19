@@ -1,3 +1,4 @@
+
 """
 Online Prompt Complexity Router Engine.
 
@@ -41,6 +42,14 @@ class PromptRouter:
         self.tau1 = payload["tau1"]
         self.tau2 = payload["tau2"]
         use_emb = payload.get("use_embeddings", False)
+
+        # Ensure cross-version compatibility for scikit-learn LogisticRegression
+        estimators = [self.classifier]
+        if hasattr(self.classifier, "steps"):
+            estimators.extend([step for _, step in self.classifier.steps])
+        for est in estimators:
+            if est.__class__.__name__ == "LogisticRegression" and not hasattr(est, "multi_class"):
+                est.multi_class = "auto"
 
         self.extractor = CPUFeatureExtractor(use_embeddings=use_emb)
 

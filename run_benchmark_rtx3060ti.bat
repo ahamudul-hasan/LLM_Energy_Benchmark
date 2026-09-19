@@ -44,27 +44,36 @@ if errorlevel 1 (
 curl -s http://localhost:11434/api/tags >nul 2>&1
 if errorlevel 1 (
     echo Ollama server is not running. Starting Ollama in background...
-    start "" /b ollama serve
-    timeout /t 3 /nobreak >nul
+    start "Ollama Server" /min cmd /c "ollama serve > ollama_server.log 2>&1"
+    for /l %%i in (1,1,15) do (
+        curl -s http://localhost:11434/api/tags >nul 2>&1
+        if not errorlevel 1 goto OllamaReady
+        timeout /t 1 /nobreak >nul
+    )
+    echo [ERROR] Ollama did not become ready within 15 seconds.
+    echo See ollama_server.log for startup details.
+    pause
+    exit /b 1
 )
+:OllamaReady
 
 :: Check and pull required models
 echo Checking model tiers in Ollama...
 ollama list | findstr /i "llama3.2:1b" >nul 2>&1
 if errorlevel 1 (
-    echo Pulling Tier 1 model: llama3.2:1b (approx 1.3 GB)...
+    echo Pulling Tier 1 model: llama3.2:1b - approx 1.3 GB...
     ollama pull llama3.2:1b
 )
 
 ollama list | findstr /i "llama3.2:3b" >nul 2>&1
 if errorlevel 1 (
-    echo Pulling Tier 2 model: llama3.2:3b (approx 2.0 GB)...
+    echo Pulling Tier 2 model: llama3.2:3b - approx 2.0 GB...
     ollama pull llama3.2:3b
 )
 
 ollama list | findstr /i "llama3.1:8b" >nul 2>&1
 if errorlevel 1 (
-    echo Pulling Tier 3 model: llama3.1:8b (approx 4.9 GB)...
+    echo Pulling Tier 3 model: llama3.1:8b - approx 4.9 GB...
     ollama pull llama3.1:8b
 )
 echo All 3 model tiers are available in Ollama!
@@ -126,8 +135,8 @@ echo.
 if exist figures\rtx3060ti (
     echo Opening RTX 3060 Ti figures folder...
     start explorer figures\rtx3060ti
-) else if exist figures (
-    start explorer figures
+) else (
+    if exist figures start explorer figures
 )
 
 echo.
