@@ -6515,3 +6515,24 @@ eval_1790431060918,llama3.1:8b,199,7,6.2082,6.0695,53.84,363.8138,29.5777,4.2254
 eval_1790431075515,llama3.1:8b,204,37,6.8883,6.12,53.84,438.7155,67.8663,1.8342,True,There is no mention of Edward the Confessor's son returning from his father's refuge. The text actually states that Edward himself returned from his father's refuge in 1041.,squad,3,1.0
 eval_1790431090447,llama3.1:8b,201,36,7.034,6.1405,53.84,443.0943,64.4016,1.7889,True,"There is no mention of Harthacnut establishing a force. According to the context, Harthacnut invited Edward the Confessor to return from his father's refuge.",squad,3,1.0
 eval_1790431107248,llama3.1:8b,204,36,8.0697,7.2082,53.84,513.5604,79.1087,2.1975,True,The context does not mention Robert of Jumieges being made earl of Hereford. It actually states that Ralph the Timid was made earl of Hereford.,squad,3,1.0
+eval_1790431122948,llama3.1:8b,157,6,7.0366,6.9152,53.84,406.6993,27.869,4.6448,True,The Battle of Hastings.,squad,3,1.0
+eval_1790431140048,llama3.1:8b,157,9,7.6488,7.462,53.84,445.572,33.7779,3.7531,True,Duke William II of Normandy.,squad,3,1.0
+eval_1790431155514,llama3.1:8b,158,4,6.562,6.486,53.84,381.4264,28.1473,7.0368,True,1066.,squad,3,1.0
+eval_1790431170012,llama3.1:8b,162,7,6.2786,6.1343,53.84,369.4162,31.3909,4.4844,True,The Anglo-Saxons.,squad,3,1.0
+eval_1790431187720,llama3.1:8b,159,41,9.1404,8.1325,53.84,589.8781,97.7808,2.3849,True,"There is no mention of King Harold II conquering England in the provided context. In fact, it states that King Harold II was killed by Duke William II of Normandy at the Battle of Hastings.",squad,3,1.0
+eval_1790431203397,llama3.1:8b,44,12,6.9838,6.7098,53.84,414.5664,38.5778,3.2148,True,The sentiment of this movie review is: **Positive**,sst2,3,1.0
+eval_1790431213825,llama3.1:8b,41,39,3.5631,2.257,53.84,250.5796,58.7522,1.5065,True,"The sentiment of the movie review is: **Negative**
+
+The adjectives ""bleak"" and ""desperate"" have negative connotations, suggesting that the reviewer did not enjoy the movie.",sst2,3,1.0
+eval_1790431221736,llama3.1:8b,55,38,3.1881,2.2838,53.84,218.6734,47.033,1.2377,True,"The sentiment of the review is: **Positive**
+
+The reviewer expresses hope that the filmmaker (Christopher Nolan) will continue to have a successful career, implying that they have already shown promise.",sst2,3,1.0
+eval_1790431228956,llama3.1:8b,57,10,2.5459,2.292,53.84,149.9513,12.884,1.2884,True,The sentiment of the review is 'positive'.,sst2,3,1.0
+eval_1790431235824,llama3.1:8b,44,2,2.223,2.19,53.84,125.823,6.1413,3.0707,True,Negative,sst2,3,1.0
+eval_1790431244042,llama3.1:8b,58,46,3.5807,2.2463,53.84,265.463,72.685,1.5801,True,"The sentiment of this movie review is 'positive'. The reviewer uses words like ""refreshingly"", which implies a positive connotation, and mentions that the film has ""laced with humor"", which further reinforces a positive tone.",sst2,3,1.0
+eval_1790431251580,llama3.1:8b,39,19,2.8913,2.2408,53.84,175.2038,19.5453,1.0287,True,"Negative. The review mentions the film as 'tedious', which implies a negative sentiment.",sst2,3,1.0
+eval_1790431263535,llama3.1:8b,46,107,7.3952,2.3045,53.84,581.5755,183.4379,1.7144,True,"I think there may be a problem with the review provided. It appears to be a single sentence with no context or details about the movie, and it doesn't express a clear sentiment. The sentence seems to be comparing the experience of watching the movie to doing taxes with an ex-wife, which might be intended to be humorous or sarcastic, but without more context, it's difficult to classify the sentiment as either 'positive' or 'negative'. 
+
+If you could provide a more complete review, I'd be happy to help!",sst2,3,1.0
+eval_1790431271131,llama3.1:8b,57,11,2.4202,2.1187,53.84,139.4532,9.1563,0.8324,True,The sentiment of this movie review is 'positive'.,sst2,3,1.0
+eval_1790431278655,llama3.1:8b,72,3,2.1332,2.0862,53.84,131.9565,17.112,5.704,True,Negative.,sst2,3,1.0
