@@ -1,0 +1,36 @@
+{
+  "evaluation_prompts_count": 12,
+  "tier_models": {
+    "tier_1": "gemma3:1b",
+    "tier_2": "phi3.5:3.8b",
+    "tier_3": "mistral:7b"
+  },
+  "run_label": "gemma-phi-mistral",
+  "quiescent_p_idle_watts": 31.79,
+  "static_tier3_total_energy_kj": 6.52,
+  "adaptive_router_total_energy_kj": 5.182,
+  "static_tier3_net_energy_joules": 4120.5,
+  "adaptive_router_net_energy_joules": 3513.67,
+  "energy_savings_percent": 14.73,
+  "static_tier3_mean_joules_per_token": 21.082,
+  "adaptive_router_mean_joules_per_token": 16.1134,
+  "static_tier3_quality_score": 0.8725,
+  "adaptive_router_quality_score": 0.8615,
+  "quality_preservation_ratio_qpr": 98.73,
+  "mean_router_overhead_ms": 17.036,
+  "static_tier3_mean_latency_s": 6.289,
+  "adaptive_router_mean_latency_s": 4.373,
+  "static_tier3_mean_ttft_s": 4.962,
+  "adaptive_router_mean_ttft_s": 3.156,
+  "tier_distribution_counts": {
+    "2": 6,
+    "3": 4,
+    "1": 2
+  },
+  "tier_distribution_percentages": {
+    "Tier_2_pct": 50.0,
+    "Tier_3_pct": 33.3,
+    "Tier_1_pct": 16.7
+  },
+  "gpu_device": "NVIDIA GeForce RTX 3060 Ti"
+}

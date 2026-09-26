@@ -1,0 +1,450 @@
+test_id,model_used,prompt_token_count,output_token_count,latency_seconds,ttft_seconds,p_idle_watts,total_energy_joules,net_energy_joules,joules_per_token,nvml_used,response_text,dataset,target_tier,quality_score
+eval_1790416100778,qwen3:1.7b,968,291,17.1253,15.8544,13.53,887.8508,656.206,2.255,True,"- Zully Broussard's selfless kidney donation triggered a data-driven chain reaction, enabling six transplants through matched donor-recipient pairs, facilitated by the MatchGrid program.  
+- The complex process, involving five surgeons and 40 staff, relied on genetic profiling to connect incompatible pairs, highlighting the transformative power of altruism and technology.  
+- The rare, long-chain transplant approach underscores how individual acts can unlock new possibilities, as seen in Broussard's generosity opening doors for 140 potential matches, emphasizing the role of divine guidance and technological innovation.",cnn_dailymail,1,0.1956521739130435
+eval_1790416139555,qwen3:1.7b,1688,454,6.7041,4.689,13.53,621.5725,530.8902,1.1694,True,"- The 1996 MLS debut marked the first-ever Major League Soccer game, symbolizing a transformative era for the league, with 31,683 fans at San Jose Stadium and a focus on rule innovations.  
+- The league has grown significantly since then, with 20 teams, increased attendance, and a $700 million TV deal, while facing challenges like financial struggles, player acquisition complexities, and competition from European clubs.  
+- Strategies to attract talent, such as youth development, international signings, and improved scouting, aim to sustain growth, with examples like Orlando City’s rise and the potential of players like Kaka and Villa to boost the league’s appeal.",cnn_dailymail,1,0.14414414414414417
+eval_1790416179298,qwen3:1.7b,102,777,7.7541,4.5208,13.53,879.8947,775.0085,0.9974,True,,gsm8k,1,0.0
+eval_1790416215039,qwen3:1.7b,64,419,6.2288,4.5032,13.53,537.1374,452.8838,1.0809,True,"Step 1: The robe requires 2 bolts of blue fiber.  
+Step 2: The white fiber required is half of the blue fiber, which is $ \frac{2}{2} = 1 $ bolt.  
+Step 3: Add the blue and white fibers together: $ 2 + 1 = 3 $ bolts.  
+
+#### [final answer]  
+3",gsm8k,1,1.0
+eval_1790416284451,qwen3:1.7b,143,3446,19.9513,4.5262,13.53,3641.1178,3371.2466,0.9783,True,"To solve the problem of determining whether any two numbers in a given list are closer to each other than a specified threshold, we can follow a **efficient and correct approach** by leveraging sorting and adjacent comparisons.
+
+---
+
+### ✅ Problem Analysis
+
+We are given a list of floating-point numbers and a threshold value. The goal is to check if **any two numbers in the list are closer than the threshold**. 
+
+- If the list contains fewer than two elements, there are no pairs to compare, so the function should return `False`.
+- For a list of length `n`, we need to check all **adjacent pairs** after sorting, because the closest values in a sorted list are adjacent.
+
+---
+
+### ✅ Efficient Approach
+
+1. **Sort the list**: This allows us to compare only adjacent elements, which reduces the time complexity from `O(n²)` to `O(n log n)` for sorting.
+2. **Check adjacent pairs**: For each pair of adjacent elements in the sorted list, compute the absolute difference. If any pair has a difference **less than the threshold**, return `True`.
+3. **Return `False` if no such pair is found**: If after checking all adjacent pairs, no pair meets the condition, return `False`.
+
+---
+
+### ✅ Python Implementation
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    if len(numbers) < 2:
+        return False
+    numbers.sort()
+    for i in range(len(numbers) - 1):
+        if abs(numbers[i+1] - numbers[i]) < threshold:
+            return True
+    return False
+```
+
+---
+
+### ✅ Example Usage
+
+```python
+print(has_close_elements([1.0, 2.0, 3.0], 0.5))       # Output: False
+print(has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3))  # Output: True
+```
+
+---
+
+### ✅ Time and Space Complexity
+
+- **Time Complexity**:  
+  - Sorting: `O(n log n)`  
+  - Adjacent comparison: `O(n)`  
+  - **Overall**: `O(n log n)`
+
+- **Space Complexity**:  
+  - `O(n)` for the sorted list.
+
+---
+
+### ✅ Conclusion
+
+This implementation is both **efficient and correct**, leveraging the fact that in a sorted list, the closest values are adjacent. It avoids the `O(n²)` time complexity of checking all possible pairs by using sorting and adjacent comparisons. The code is clean, readable, and handles all edge cases (e.g., empty list, single-element list, and threshold 0.0).",humaneval,1,1.0
+eval_1790416531902,qwen3:1.7b,134,7512,39.8193,4.5296,13.53,8062.8995,7524.285,1.0016,True,"To solve the problem, we must extract **valid parentheses strings** from a given input string, where the input consists of **multiple groups of parentheses separated by spaces**.
+
+---
+
+### Key Observations:
+- The input string is a list of **valid parentheses strings**, separated by spaces.
+- Each group is a **valid parentheses string**, meaning it must be in the form `( )` repeated an even number of times, with balanced opening and closing brackets.
+- The goal is to **split the input string into these groups**, then **remove spaces** from each group to obtain the final result.
+
+---
+
+### Steps to Solve:
+
+1. **Split the input string** using the `split()` method, which splits by whitespace.
+2. **Iterate over the split parts**, and for each part:
+   - **Remove all spaces** (i.e., strip leading/trailing spaces).
+   - Keep the resulting string as the **final group**.
+3. **Return the list of these cleaned groups**.
+
+---
+
+### Example:
+
+Suppose the input is:
+
+```
+""( ) (( )) (( )( ))""
+```
+
+- Split the input: `[""( )"", ""(( ))"", ""(( )( ))""]`
+- Clean each part:
+  - `""()""` → `""()""`
+  - `""(( ))""` → `""(()())""`
+  - `""(( )( ))""` → `""(()())""`
+- Final result: `[""()"", ""(()())"", ""(()())""]`
+
+---
+
+### Final Answer:
+
+```python
+[""()"", ""(())"", ""(()())""]
+```
+
+This output corresponds to the input string split and cleaned as described.",humaneval,1,0.0
+eval_1790416656583,qwen3:1.7b,56,801,7.7749,4.4664,13.53,912.6616,807.4952,1.0081,True,"The premise ""The new rights are nice enough"" and the hypothesis ""Everyone really likes the newest benefits"" are **neutral**. 
+
+**Explanation:**  
+- The premise discusses the **quality or acceptability** of ""new rights,"" while the hypothesis focuses on **people's positive sentiment toward ""newest benefits.""**  
+- The terms ""rights"" and ""benefits"" are distinct concepts. The premise does not mention benefits or imply that they are liked by everyone.  
+- There is no direct logical connection or entailment between the two statements. The premise does not support or contradict the hypothesis, nor does it provide evidence for it.  
+- Thus, the relationship is **neutral**.  
+
+**Answer:** neutral",mnli,1,1.0
+eval_1790416727697,qwen3:1.7b,75,447,6.3125,4.4797,13.53,576.1773,490.7912,1.098,True,"The premise states that the site includes a **searchable database** of Government Executive articles. The hypothesis claims that **these articles are not searchable**. Since the premise explicitly confirms the database's searchability and the hypothesis denies it, the two statements directly contradict each other. 
+
+**Relationship:** contradiction. 
+
+**Answer:** contradiction.",mnli,1,1.0
+eval_1790416772725,qwen3:1.7b,210,80,4.8484,4.4985,13.53,377.0994,311.5175,3.894,True,France.,squad,1,1.0
+eval_1790416798836,qwen3:1.7b,211,26,4.6478,4.5186,13.53,330.153,267.2849,10.2802,True,The Normans were in Normandy from the 10th to the 11th centuries.,squad,1,0.0
+eval_1790416827269,qwen3:1.7b,44,304,5.7281,4.4887,13.53,458.4311,380.9497,1.2531,True,"The sentiment of the review is **positive**. The use of adjectives like ""charming"" and ""affecting"" conveys a favorable impression, and there are no negative elements or criticisms mentioned.",sst2,1,1.0
+eval_1790416857925,qwen3:1.7b,41,299,5.7147,4.4863,13.53,457.3446,380.0445,1.2711,True,"The sentiment of the review is **negative**. The adjectives ""unflinchingly bleak"" and ""desperate"" convey a sense of pessimism and hopelessness, which are typically associated with negative evaluations.",sst2,1,1.0
+eval_1790416111205,qwen3:4b,968,539,9.3526,5.1525,13.53,1191.3434,1064.8355,1.9756,True,"Here's a 2-3 bullet point summary of the article:
+
+*   Zully Broussard's altruistic kidney donation to a stranger triggered a domino effect chain reaction, resulting in **six patients receiving transplants** through a complex paired donation system.
+*   A computer program called **MatchGrid** (developed by David Jacobs) enabled the rapid genetic matching of donor-recipient pairs, completing the chain in **three weeks** instead of the typical 3-4 months, significantly expanding matching options from 3-4 to 140.
+*   This chain reaction, involving family pairs and leveraging big data, demonstrated how **one generous act can multiply life-saving transplants** for multiple patients across a network.",cnn_dailymail,2,0.2040816326530612
+eval_1790416149808,qwen3:4b,1688,679,9.1639,3.7432,13.53,1445.6964,1321.7415,1.9466,True,"Here's a 2-3 bullet point summary of the article:
+
+*   MLS launched in 1996 with 10 teams and has grown dramatically to 20 teams (4 more by 2020), seeing massive increases in attendance, fan interest (e.g., 25M viewers for US vs. Portugal at World Cup), and a record $700M TV deal with FOX/ESPN/Univision – tripling its previous value.
+*   Despite early financial struggles (up to $250M losses in first 5 years, only 10/19 teams profitable by 2013), the league has overcome significant challenges to become a major US sport, with current focus on attracting younger players and improving player retention through strategic development and transfers.",cnn_dailymail,2,0.1724137931034483
+eval_1790416189251,qwen3:4b,102,723,8.8734,3.3866,13.53,1344.0612,1224.0355,1.693,True,"Janet’s ducks lay 16 eggs per day.  
+- She eats **3 eggs** for breakfast every morning.  
+- She uses **4 eggs** to bake muffins for her friends every day.  
+
+**Step 1:** Calculate total eggs used per day:  
+$ 3 \text{ (breakfast)} + 4 \text{ (muffins)} = 7 \text{ eggs} $
+
+**Step 2:** Determine remaining eggs to sell:  
+$ 16 \text{ (total eggs)} - 7 \text{ (used)} = 9 \text{ eggs} $
+
+**Step 3:** Calculate daily earnings from selling eggs:  
+$ 9 \text{ eggs} \times \$2 \text{ per egg} = \$18 $
+
+#### [18]",gsm8k,2,1.0
+eval_1790416223507,qwen3:4b,64,539,7.4316,3.3697,13.53,1037.2979,936.774,1.738,True,"To solve the problem step-by-step:
+
+1. **Identify the amount of blue fiber**:  
+   The problem states that a robe takes **2 bolts** of blue fiber.
+
+2. **Determine the amount of white fiber**:  
+   It says the robe takes **half that much white fiber**, where ""that much"" refers to the blue fiber.  
+   So, white fiber = $ \frac{1}{2} \times 2 = 1 $ bolt.
+
+3. **Add the two amounts to find the total**:  
+   Total bolts = blue fiber + white fiber = $ 2 + 1 = 3 $.
+
+#### [3]",gsm8k,2,1.0
+eval_1790416337030,qwen3:4b,143,5816,51.5111,3.407,13.53,10931.81,10235.0465,1.7598,True,"To solve this problem, we need to determine if there exist any two numbers in a given list that are closer to each other than a specified threshold. The solution involves efficiently checking pairs of numbers in the list to see if their absolute difference is less than the threshold.
+
+### Approach
+1. **Initial Checks**: 
+   - If the list contains fewer than two numbers, return `False` since no pairs can exist.
+   - If the threshold is less than or equal to zero, return `False` because the absolute difference between any two numbers is non-negative, making it impossible for the difference to be less than a non-positive threshold.
+
+2. **Sort the List**: 
+   - Sorting the list allows us to efficiently check consecutive elements, as the smallest differences between numbers will be between adjacent elements in the sorted list.
+
+3. **Check Consecutive Elements**:
+   - Iterate through the sorted list starting from the second element.
+   - For each element, compute the difference with the previous element.
+   - If any difference is found to be less than the threshold, return `True` immediately.
+   - If no such pair is found after checking all consecutive elements, return `False`.
+
+This approach ensures that we efficiently check for the presence of any pair of numbers closer than the threshold in O(n log n) time due to the sorting step, which is optimal for this problem.
+
+### Solution Code
+```python
+def has_close_elements(numbers: list[float], threshold: float) -> bool:
+    if len(numbers) < 2:
+        return False
+    if threshold <= 0:
+        return False
+    sorted_numbers = sorted(numbers)
+    for i in range(1, len(sorted_numbers)):
+        if sorted_numbers[i] - sorted_numbers[i-1] < threshold:
+            return True
+    return False
+```
+
+### Explanation
+- **Initial Checks**: The solution first checks if the list has at least two elements and if the threshold is positive. If either condition fails, the function returns `False` immediately.
+- **Sorting**: The list is sorted to bring potentially close numbers adjacent to each other.
+- **Consecutive Check**: By iterating through the sorted list, the solution checks each pair of consecutive elements. If the difference between any two consecutive elements is less than the threshold, the function returns `True`. If the entire list is processed without finding such a pair, the function returns `False`.
+
+This method efficiently leverages sorting and a linear pass through the list to determine the presence of any close pairs, ensuring optimal performance for the given problem constraints.",humaneval,2,1.0
+eval_1790416589039,qwen3:4b,134,6135,56.0495,3.6492,13.53,11943.3403,11185.1877,1.8232,True,"To solve this problem, we need to split a given string of parentheses into distinct balanced groups. The key insight here is that each balanced group of parentheses starts with an opening parenthesis `'('` and ends with a corresponding closing parenthesis `')'`, ensuring that the count of opening and closing parentheses is balanced within each group.
+
+### Approach
+1. **Clean the Input String**: Remove all spaces from the input string to handle any spaces that might be present in the original string.
+2. **Traverse the Cleaned String**: Iterate through the cleaned string while maintaining a counter for the balance of parentheses:
+   - **Increment Counter** when encountering an opening parenthesis `'('`.
+   - **Decrement Counter** when encountering a closing parenthesis `')'`.
+3. **Identify Balanced Groups**: Whenever the counter returns to zero, it indicates that a balanced group of parentheses has been found. Append this group to the result list and reset the starting index for the next group.
+
+This approach efficiently processes the string in a single pass, ensuring optimal performance with O(n) time complexity, where n is the length of the cleaned string.
+
+### Solution Code
+```python
+from typing import List
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    cleaned = paren_string.replace(' ', '')
+    groups = []
+    start = 0
+    current_count = 0
+    for i in range(len(cleaned)):
+        if cleaned[i] == '(':
+            current_count += 1
+        elif cleaned[i] == ')':
+            current_count -= 1
+        if current_count == 0:
+            groups.append(cleaned[start:i+1])
+            start = i + 1
+    return groups
+```
+
+### Explanation
+1. **Cleaning the String**: The input string is first processed to remove all spaces, ensuring that we only deal with parentheses.
+2. **Tracking Parentheses Balance**: As we iterate through each character in the cleaned string:
+   - For each `'('`, we increment a counter (`current_count`).
+   - For each `')'`, we decrement the counter.
+3. **Group Identification**: When `current_count` becomes zero, it signifies that the current segment of the string forms a balanced group of parentheses. This segment is then added to the result list, and the starting index for the next group is set to the next character after the current segment.
+4. **Result Compilation**: The process continues until the entire string is processed, resulting in a list of balanced parentheses groups.
+
+This method efficiently splits the input string into distinct balanced groups by leveraging a simple counter to track the balance of parentheses, ensuring correctness and optimal performance. The solution handles edge cases such as empty strings and strings with unbalanced parentheses gracefully by only processing valid balanced segments.",humaneval,2,1.0
+eval_1790416682839,qwen3:4b,56,2763,25.2201,3.3956,13.53,5029.1763,4688.0373,1.6967,True,"The task involves determining the **Natural Language Inference (NLI)** relationship between the premise and hypothesis. The options are **entailment**, **neutral**, or **contradiction**.
+
+---
+
+### Step 1: Understand the Statements
+
+- **Premise**: *""The new rights are nice enough""*
+  - This statement asserts that the new rights (a specific set of entitlements or privileges) are **sufficiently good** or **pleasant** (i.e., ""nice enough"").
+  - It does **not** imply universal approval or strong emotional response from everyone.
+
+- **Hypothesis**: *""Everyone really likes the newest benefits""*
+  - This statement claims that **everyone** has a **strong positive sentiment** (""really likes"") toward the **newest benefits** (a term that could refer to advantages, perks, or entitlements).
+  - It is a **stronger and more specific** claim than the premise.
+
+---
+
+### Step 2: Analyze the Relationship
+
+- **Key Difference in Terminology**:
+  - The premise uses **""new rights""**, while the hypothesis uses **""newest benefits""**.
+  - In standard English, **""rights""** and **""benefits""** are **not synonymous**. Rights typically refer to legal or moral entitlements, while benefits refer to advantages or perks.
+  - However, in some contexts (e.g., social policy), the terms can overlap. But even in such cases, the **hypothesis makes a stronger claim** than the premise.
+
+- **Strength of Claim**:
+  - The premise says the rights are **nice enough** (a moderate, subjective assessment).
+  - The hypothesis says **everyone really likes** the benefits (a universal, strong emotional response).
+  - The hypothesis is **more specific and stronger** than the premise.
+
+- **Does the Premise Entail the Hypothesis?**
+  - No. The premise being true (the new rights are nice enough) does **not guarantee** that **everyone** likes the newest benefits.
+  - For example, the rights might be nice enough for some people, but not for others — the hypothesis claims **everyone** likes them, which is a **stronger claim** not supported by the premise.
+
+- **Is There a Contradiction?**
+  - No. The premise does **not** contradict the hypothesis. The premise being true (rights are nice enough) does **not** imply that the hypothesis is false. The hypothesis could still be true (if ""newest benefits"" are the same as ""new rights"" and everyone likes them), or it could be false (if not everyone likes them).
+
+- **Conclusion on Relationship**:
+  - The premise **does not entail** the hypothesis.
+  - The premise **does not contradict** the hypothesis.
+  - Therefore, the relationship is **neutral** — the two statements are **not logically related** in a way that supports or undermines each other.
+
+---
+
+### Final Answer
+
+**neutral**",mnli,2,1.0
+eval_1790416745364,qwen3:4b,75,1710,16.613,3.374,13.53,3108.2222,2883.5068,1.6863,True,"The NLI (Natural Language Inference) relationship between the premise and hypothesis is **contradiction**.
+
+### Explanation:
+- **Premise**: ""This site includes a list of all award winners and a searchable database of Government Executive articles.""  
+  This explicitly states that the site has a ""searchable database"" of Government Executive articles, meaning the articles are designed to be searchable (i.e., users can search for them).
+  
+- **Hypothesis**: ""The Government Executive articles housed on the website are not able to be searched.""  
+  This claims that the Government Executive articles cannot be searched.
+
+### Why it is contradiction:
+- The premise directly states that the Government Executive articles are part of a ""searchable database,"" which implies that they **are able to be searched**.
+- The hypothesis claims that they **are not able to be searched**.
+- Therefore, if the premise is true (the database is searchable), the hypothesis must be false (the articles cannot be searched). This means the premise and hypothesis cannot both be true; they are mutually exclusive.
+- In NLI terms, this is a **contradiction** because the premise being true logically implies that the hypothesis is false.
+
+### Why not the other options?
+- **Entailment**: This would mean the hypothesis must be true if the premise is true. However, the premise being true directly contradicts the hypothesis, so entailment does not apply.
+- **Neutral**: This would mean there is no logical relationship (e.g., the premise neither supports nor contradicts the hypothesis). But here, the premise explicitly addresses the searchability of the articles, creating a clear conflict with the hypothesis, so it is not neutral.
+
+This analysis is based on standard NLI principles, where the focus is on the logical relationship between the statements as presented, without additional context or assumptions.
+
+**Relationship: contradiction**",mnli,2,1.0
+eval_1790416779276,qwen3:4b,210,281,5.5008,3.3945,13.53,633.6455,559.2389,1.9902,True,France,squad,2,1.0
+eval_1790416805685,qwen3:4b,211,321,5.8188,3.4114,13.53,657.9276,579.2192,1.8044,True,the 10th and 11th centuries,squad,2,1.0
+eval_1790416838221,qwen3:4b,44,864,9.9249,3.3861,13.53,1582.6961,1448.4477,1.6764,True,positive,sst2,2,1.0
+eval_1790416864977,qwen3:4b,41,357,6.0144,3.3613,13.53,736.0518,654.6978,1.8339,True,"The phrase ""unflinchingly bleak and desperate"" uses strong negative adjectives:  
+- **""Bleak""** implies desolation, hopelessness, and lack of optimism.  
+- **""Desperate""** conveys extreme distress, anxiety, and a lack of resolution.  
+- **""Unflinchingly""** intensifies these descriptors, emphasizing the movie's relentless and unwavering negativity without reservation.  
+
+In the context of movie reviews, such language consistently indicates a negative sentiment, as it describes the film as profoundly depressing and lacking any uplifting elements.  
+
+**Answer: negative**",sst2,2,1.0
+eval_1790416082601,qwen3:8b,968,487,30.9702,16.0217,13.53,2139.5787,1720.6605,3.5332,True,"- Zully Broussard's altruistic kidney donation to a stranger triggered a chain of six transplants via data-driven genetic matching, expanding her impact beyond a single recipient.  
+- A computer program (MatchGrid) enabled rapid pairing of donor-recipient chains, reducing transplant coordination time from months to weeks and facilitating complex, multi-patient swaps.  
+- The operation involved over 40 medical staff and multiple surgeons, highlighting the collaborative effort to achieve a rare, large-scale transplant chain.",cnn_dailymail,3,0.27499999999999997
+eval_1790416131769,qwen3:8b,1688,494,11.9486,5.9576,13.53,1726.608,1564.9854,3.168,True,"- **Historic debut and growth**: The first MLS match in 1996 marked a bold start for American soccer, evolving into a thriving league with 20 teams, higher attendances, and a $700M media deal, reflecting its transformation into a major sport in the U.S.  
+- **Challenges and strategies**: Early financial struggles and team closures highlighted hurdles, but the league now balances a salary cap with strategies to attract young European talent and high-profile players to boost competitiveness.  
+- **Future aspirations**: Despite challenges, MLS aims to rival global leagues by leveraging player trading, scouting, and reinvestment, with optimism about becoming a top-tier sport in the U.S. within a decade.",cnn_dailymail,3,0.1651376146788991
+eval_1790416170517,qwen3:8b,102,406,10.0561,5.3139,13.53,1355.5512,1219.5275,3.0038,True,"Janet’s ducks lay 16 eggs per day. She uses 3 eggs for breakfast and 4 eggs for muffins, totaling $3 + 4 = 7$ eggs. The remaining eggs for sale are $16 - 7 = 9$. At $2 per egg, her daily earnings are $9 \times 2 = 18$.  
+
+#### [final answer]",gsm8k,3,1.0
+eval_1790416207720,qwen3:8b,64,311,5.7045,2.0792,13.53,864.0024,786.84,2.53,True,"The robe requires 2 bolts of blue fiber. The white fiber needed is half of that amount, which is 2 ÷ 2 = 1 bolt. Adding the blue and white fibers together: 2 + 1 = 3.  
+
+#### [final answer]",gsm8k,3,1.0
+eval_1790416263441,qwen3:8b,143,2252,29.4757,2.3101,13.53,6111.5349,5712.832,2.5368,True,"To solve the problem efficiently, we need to determine if any two numbers in the given list are closer to each other than a specified threshold. A naive approach would involve checking all pairs, which leads to an $O(n^2)$ time complexity. However, by sorting the list first, we can reduce the problem to checking only adjacent elements, which results in an $O(n \log n)$ time complexity due to the sorting step, followed by a linear pass.
+
+---
+
+### ✅ Key Observations
+
+- After sorting, the closest elements in the list will be adjacent.
+- The difference between any two elements in a sorted list is minimized between consecutive elements.
+- Therefore, we only need to check the differences between consecutive elements in the sorted list.
+
+---
+
+### ✅ Implementation
+
+Here's the efficient and correct Python implementation of the function:
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    sorted_numbers = sorted(numbers)
+    for i in range(len(sorted_numbers) - 1):
+        if sorted_numbers[i+1] - sorted_numbers[i] < threshold:
+            return True
+    return False
+```
+
+---
+
+### 📌 Explanation
+
+- **Sorting**: The list is sorted to ensure that the closest elements are adjacent.
+- **Linear Check**: After sorting, we iterate through the list and compare each pair of consecutive elements.
+- **Early Exit**: As soon as a pair is found where the difference is less than the threshold, the function returns `True`.
+- **Edge Cases**: If the list has fewer than two elements, the loop does not run, and the function returns `False`, which is correct.
+
+---
+
+### 🧪 Example Test Cases
+
+```python
+print(has_close_elements([1.0, 2.0, 3.0], 0.5))           # False
+print(has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3))  # True
+print(has_close_elements([2.0, 2.0], 0.1))                # True
+print(has_close_elements([1.0, 3.0], 0.5))                # False
+```
+
+---
+
+### 🧠 Time and Space Complexity
+
+- **Time Complexity**: $O(n \log n)$ due to sorting.
+- **Space Complexity**: $O(n)$ for the sorted list (assuming in-place sorting is not used; Python’s `sorted()` returns a new list).
+
+---
+
+This approach is both efficient and easy to understand, making it ideal for most practical use cases where the threshold is non-negative.",humaneval,3,1.0
+eval_1790416491027,qwen3:8b,134,9536,122.304,2.3858,13.53,26960.1392,25305.7969,2.6537,True,"Here's a complete Python program that reads a string input and counts the number of vowels in it, regardless of case:
+
+```python
+# Get the input string from the user
+s = input(""Enter a string: "")
+
+# Convert the string to lowercase for case-insensitive checking
+s = s.lower()
+
+# Initialize a counter for vowels
+vowel_count = 0
+
+# Define the set of vowels
+vowels = {'a', 'e', 'i', 'o', 'u'}
+
+# Iterate through each character in the string
+for char in s:
+    if char in vowels:
+        vowel_count += 1
+
+# Print the total number of vowels
+print(f""The number of vowels in the string is: {vowel_count}"")
+```
+
+### Explanation:
+1. **Input Handling**: The program uses `input()` to read a string from the user.
+2. **Case Insensitivity**: The string is converted to lowercase using `lower()` to ensure that both uppercase and lowercase vowels are counted.
+3. **Vowel Checking**: A set of vowels is defined for efficient lookup. Each character in the string is checked against this set.
+4. **Counting**: A counter variable `vowel_count` is incremented whenever a vowel is found.
+5. **Output**: The final count is printed using an f-string for clarity.
+
+### Example:
+If the input is `""Hello, World!""`, the output will be:
+```
+The number of vowels in the string is: 3
+```
+
+This program handles all edge cases, including uppercase letters, non-alphabetic characters, and empty strings.",humaneval,3,0.0
+eval_1790416647770,qwen3:8b,56,793,11.7753,2.421,13.53,2126.1184,1966.8398,2.4803,True,"The premise ""The new rights are nice enough"" expresses a general positive assessment, but it does not assert universal approval. The hypothesis ""Everyone really likes the newest benefits"" makes a strong, universal claim about collective preference. While ""rights"" and ""benefits"" might overlap in some contexts, the premise's vagueness (""nice enough"") does not logically entail the hypothesis's specific assertion about universal liking. Similarly, the premise does not contradict the hypothesis, as it neither denies universal approval nor provides evidence against it. Thus, the relationship is **neutral**.
+
+**Answer:** neutral",mnli,3,1.0
+eval_1790416720346,qwen3:8b,75,426,10.289,5.3018,13.53,1433.3959,1294.2225,3.0381,True,"The premise states that the website features a ""searchable database of Government Executive articles,"" which directly asserts the ability to search these articles. The hypothesis claims the opposite: ""The Government Executive articles housed on the website are not able to be searched."" 
+
+Since the premise explicitly confirms the searchability of the articles, while the hypothesis denies it, the two statements are logically incompatible. This makes the relationship a **contradiction**.
+
+**Answer:** contradiction",mnli,3,1.0
+eval_1790416766809,qwen3:8b,210,111,6.6245,5.3192,13.53,538.2283,448.622,4.0416,True,France,squad,3,1.0
+eval_1790416793156,qwen3:8b,211,176,7.3999,5.34,13.53,725.2218,625.1266,3.5519,True,The Normans were in Normandy during the 10th and 11th centuries.,squad,3,1.0
+eval_1790416820467,qwen3:8b,44,251,8.2155,5.3012,13.53,907.3268,796.2,3.1721,True,Answer: positive,sst2,3,1.0
+eval_1790416851151,qwen3:8b,41,200,7.5782,5.26,13.53,762.5455,660.039,3.3002,True,Answer: negative,sst2,3,1.0

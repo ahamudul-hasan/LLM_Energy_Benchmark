@@ -83,12 +83,15 @@ def run_benchmark_eval(
     mock: bool = True,
     limit_per_ds: int = 10,
     cool_down: float = 1.0,
-    eval_all_tiers: bool = False
+    eval_all_tiers: bool = False,
+    tier_models: Dict[int, str] | None = None,
+    run_label: str | None = None
 ) -> Dict[str, Any]:
+    tier_models = tier_models or {1: "llama3.2:1b", 2: "llama3.2:3b", 3: "llama3.1:8b"}
     print("--- Starting Benchmark Evaluation Stream (Router vs Static Baselines) ---")
     print(f"Config: mock={mock}, limit_per_ds={limit_per_ds}, cool_down={cool_down}s, eval_all_tiers={eval_all_tiers}")
 
-    router = PromptRouter()
+    router = PromptRouter(tier_models=tier_models)
     prompt_files = sorted(glob.glob(os.path.join("data", "prompts", "*.jsonl")))
 
     all_prompts = []
@@ -109,6 +112,8 @@ def run_benchmark_eval(
     results_tier2 = []
 
     out_dir = os.path.join("data", "results")
+    if run_label:
+        out_dir = os.path.join(out_dir, "model_comparisons", run_label)
     os.makedirs(out_dir, exist_ok=True)
 
     for idx, item in enumerate(all_prompts):
@@ -119,7 +124,7 @@ def run_benchmark_eval(
         # 1. Static Tier 3 Baseline Run (Llama-3.1-8B)
         res_b = run_inference_and_measure(
             prompt=prompt_text,
-            model="llama3.1:8b",
+            model=tier_models[3],
             mock=mock,
             simulate=mock,
             cool_down_seconds=cool_down,
@@ -134,7 +139,7 @@ def run_benchmark_eval(
         if eval_all_tiers:
             res_t1 = run_inference_and_measure(
                 prompt=prompt_text,
-                model="llama3.2:1b",
+                model=tier_models[1],
                 mock=mock,
                 simulate=mock,
                 cool_down_seconds=cool_down,
@@ -147,7 +152,7 @@ def run_benchmark_eval(
 
             res_t2 = run_inference_and_measure(
                 prompt=prompt_text,
-                model="llama3.2:3b",
+                model=tier_models[2],
                 mock=mock,
                 simulate=mock,
                 cool_down_seconds=cool_down,
@@ -210,6 +215,8 @@ def run_benchmark_eval(
 
     summary = {
         "evaluation_prompts_count": len(all_prompts),
+        "tier_models": {f"tier_{tier}": model for tier, model in tier_models.items()},
+        "run_label": run_label,
         "quiescent_p_idle_watts": round(batch_p_idle, 2),
         "static_tier3_total_energy_kj": round(e_total_b_kj, 3),
         "adaptive_router_total_energy_kj": round(e_total_r_kj, 3),
@@ -272,11 +279,17 @@ if __name__ == "__main__":
     parser.add_argument("--limit-per-ds", type=int, default=10, help="Number of prompts per dataset to evaluate")
     parser.add_argument("--cool-down", type=float, default=1.0, help="Cool down period between inferences (seconds)")
     parser.add_argument("--eval-all-tiers", action="store_true", help="Also evaluate static Tier 1 and Tier 2 baselines")
+    parser.add_argument("--tier1-model", default="llama3.2:1b", help="Ollama model used for Tier 1")
+    parser.add_argument("--tier2-model", default="llama3.2:3b", help="Ollama model used for Tier 2")
+    parser.add_argument("--tier3-model", default="llama3.1:8b", help="Ollama model used for Tier 3 and static baseline")
+    parser.add_argument("--run-label", default=None, help="Archive outputs under data/results/model_comparisons/<label>")
     args = parser.parse_args()
 
     run_benchmark_eval(
         mock=args.mock,
         limit_per_ds=args.limit_per_ds,
         cool_down=args.cool_down,
-        eval_all_tiers=args.eval_all_tiers
+        eval_all_tiers=args.eval_all_tiers,
+        tier_models={1: args.tier1_model, 2: args.tier2_model, 3: args.tier3_model},
+        run_label=args.run_label
     )

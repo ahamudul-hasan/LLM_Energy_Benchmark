@@ -1,0 +1,315 @@
+test_id,model_used,prompt_token_count,output_token_count,latency_seconds,ttft_seconds,p_idle_watts,total_energy_joules,net_energy_joules,joules_per_token,nvml_used,response_text,dataset,target_tier,quality_score
+eval_1790415701063,gemma3:1b,979,136,27.6917,26.9346,31.79,997.2555,116.8738,0.8594,True,"Here’s a 2-3 point summary of the news article:
+
+*   Zully Broussard’s selfless act of giving one of her kidneys to a stranger resulted in six patients receiving vital transplants, surpassing the previously remarkable milestone.
+*   The operation, which involved a complex chain of surgeries and donor pairs, utilized genetic matching technology to create 140 potential matches and significantly expand healthcare options for individuals in need.
+*   An innovative program, called MatchGrid, developed by David Jacobs, streamlined the pairing process, demonstrating the immense power of this altruistic strategy and leveraging Broussard's initial generosity in a massive, unprecedented effort.*",cnn_dailymail,1,0.16000000000000003
+eval_1790415751107,gemma3:1b,1682,175,4.2597,3.573,31.79,296.7909,161.3664,0.9221,True,"Here’s a summary of the news article in 2-3 concisely bullet-pointed points:
+
+*   **Early Growth and Nostalgia:** The inaugural MLS season in 1996 in San Jose was highly dramatic with bizarre rules and unique fan experiences—fueled by 31,683 eager viewers, clock-based drama, and shootouts.
+*   **The Rise of Major Stars:** The league experienced rapid growth from 10 teams in 1996 to nearly 20 today, with increased viewership and participation among fans.
+*   **Ongoing Challenges & Future Opportunities:** Despite initial struggles, the MLS is now poised to gain further investment and player talent, with a planned expansion and potential for further improvements – featuring a strong TV deal, a focus on younger players, and a willingness to adapt to market demands.",cnn_dailymail,1,0.1487603305785124
+eval_1790415780149,gemma3:1b,105,162,4.0771,3.4444,31.79,302.7433,173.1243,1.0687,True,"Here’s how to solve the problem, step-by-step:
+
+1.  **Calculate the number of eggs laid each day:** Janet lays 16 eggs.
+2.  **Calculate the number of eggs eaten each morning:** She eats 3 eggs.
+3.  **Calculate the remaining eggs:** 16 eggs - 3 eggs = 13 eggs
+4.  **Calculate the eggs made and sold each day:** She sells 13 eggs.
+5.  **Determine the earnings:** She earns $2 per egg.
+6.  **Calculate total earnings:** 13 eggs * $2/egg = $26
+
+Therefore, Janet makes $26 every day at the farmers' market.
+
+#### Answer: $26",gsm8k,1,0.0
+eval_1790415803612,gemma3:1b,67,106,3.8372,3.4245,31.79,257.7412,135.7491,1.2807,True,"Here's the solution process broken down step-by-step:
+1. **Blue fiber:** A robe takes 2 bolts of blue fiber.
+2. **White fiber:** The robe takes half as much white fiber as blue fiber, so it takes half of 2 bolts.  Half of 2 is 1 bolt.
+3. **Total bolts:**  Add the blue fiber and white fiber together: 2 bolts + 1 bolt = 3 bolts
+
+#### Total Answer: 3 bolts",gsm8k,1,1.0
+eval_1790415833577,gemma3:1b,157,187,4.2129,3.4742,31.79,277.8666,143.9283,0.7697,True,"```python
+from typing import List
+
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """""" Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+    False
+    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+    True
+    """"""
+    for i in range(len(numbers)):
+        for j in range(i+1, len(numbers)):
+            if abs(numbers[i] - numbers[j]) < threshold:
+                return True
+    return False
+```",humaneval,1,1.0
+eval_1790415868133,gemma3:1b,147,251,4.4213,3.4598,31.79,324.3833,183.8219,0.7324,True,"```python
+from typing import List
+
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    """""" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to
+    separate those group into separate strings and return the list of those.
+    Separate groups are balanced (each open brace is properly closed) and not nested within each other
+    Ignore any spaces in the input string.
+    >>> separate_paren_groups('( ) (( )) (( )( ))')
+    ['()', '(())', '(()())']
+    """"""
+    result = []
+    start = 0
+    balance = 0
+    for i, char in enumerate(paren_string):
+        if char == '(':
+            balance += 1
+        elif char == ')' and balance == 0:
+            result.append(paren_string[start:i])
+            start = i + 1
+            balance -= 1
+        elif char == '' and balance == 0:
+            result.append(paren_string[start:(i + 1)])
+            start = i + 1
+    return result
+```",humaneval,1,1.0
+eval_1790415900917,gemma3:1b,58,57,3.6714,3.4335,31.79,151.5206,34.7974,0.6105,True,"**neutral** 
+
+Reason: The premise just expresses a feeling or sentiment – a positive opinion. There's no logical connection for the hypothesis to contradict the premise. It’s a statement of opinion without asserting a factual claim.
+
+Therefore, it's neutral.",mnli,1,1.0
+eval_1790415921013,gemma3:1b,77,5,3.467,3.4438,31.79,246.7254,136.5028,27.3006,True,Contradiction,mnli,1,1.0
+eval_1790415945842,gemma3:1b,205,2,3.4536,3.4464,31.79,266.6117,156.8133,78.4067,True,France,squad,1,1.0
+eval_1790415969752,gemma3:1b,206,10,3.4913,3.4485,31.79,261.9591,150.9642,15.0964,True,10th and 11th centuries,squad,1,1.0
+eval_1790415988669,gemma3:1b,46,3,3.4454,3.4308,31.79,244.8239,135.2884,45.0961,True,Positive,sst2,1,1.0
+eval_1790416019070,gemma3:1b,43,3,3.4663,3.4513,31.79,245.2801,135.079,45.0263,True,Negative,sst2,1,1.0
+eval_1790415732135,phi3.5:3.8b,1104,150,30.0282,29.0279,31.79,1259.7903,305.1263,2.0342,True,"- Zully Broussard's selfless decision to donate a kidney led to a complex chain of transplants, ultimately benefiting six patients, as facilitated by MatchGrid, a genetic matching program developed by computer programmer David Jacobs.
+- The chain of kidney donations, initiated by Broussard's altruism, created 140 possible donor-recipient matches, significantly increasing the chances for recipients previously on waiting lists.
+- The successful chain of donations showcases the power of live donations and the role of MatchGrid in simplifying the process, highlighting Broussard's impact beyond her immediate act of generosity.",cnn_dailymail,2,0.20930232558139533
+eval_1790415762798,phi3.5:3.8b,1893,139,10.6226,9.5698,31.79,671.5157,333.8013,2.4014,True,"- The first Major League Soccer match took place on April 6, 1996, in San Jose, California, marking the beginning of soccer's expansion in the United States.
+- Since its inception, the league has undergthygone, with attendances rising and the number of teams increasing from 10 to 20 by 2015, with more to be added by 2020.
+- The league's new TV and media rights deal with FOX, ESPN, and Univision is worth $700 million over eight years, reflecting the sport's growing popularity.",cnn_dailymail,2,0.16842105263157897
+eval_1790415787161,phi3.5:3.8b,116,267,5.9454,4.4091,31.79,540.977,351.9596,1.3182,True,"Step 1: Calculate the total number of duck eggs laid by Janet's ducks in a day.
+Janet's ducks lay 16 eggs per day.
+
+Step 2: Calculate the number of eggs Janet eats for breakfast.
+She eats 3 eggs for breakfast every morning.
+
+Step 3: Calculate the number of eggs used for baking muffins.
+She uses 4 eggs for baking muffins daily.
+
+Step 4: Calculate the number of eggs remaining for sale.
+Subtract the eggs Janet eats (3) and uses for baking (4) from the total eggs laid (16).
+16 (total eggs) - 3 (eaten) - 4 (used for baking) = 9 eggs remaining for sale.
+
+Step 5: Calculate the daily earnings from selling the eggs at the farmers' market.
+Multiply the number of eggs remaining for sale (9) by the price per fresh duck egg ($2).
+9 eggs * $2/egg = $18
+
+#### [final answer] Janet makes $18 every day at the farmers' market.",gsm8k,2,1.0
+eval_1790415815014,phi3.5:3.8b,74,205,10.3111,9.1632,31.79,642.7304,314.9187,1.5362,True,"Step 1: Identify the given information.
+- The robe requires 2 bolts of blue fiber.
+- The robe requires half the amount of blue fiber in white fiber.
+
+Step 2: Calculate the amount of white fiber needed.
+Since the robe needs half the amount of blue fiber in white fiber, we need to find half of 2 bolts.
+(1/2) * 2 bolts = 1 bolt of white fiber.
+
+Step 3: Determine the total amount of fiber needed.
+Now we need to add the bolts of blue fiber and white fiber together to find the total amount of fiber required for the robe.
+2 bolts (blue fiber) + 1 bolt (white fiber) = 3 bolts
+
+#### [final answer] The robe requires a total of 3 bolts of fiber.",gsm8k,2,1.0
+eval_1790415846133,phi3.5:3.8b,160,387,11.4875,9.1989,31.79,850.7459,485.5321,1.2546,True,"Here is the completed Python function definition:
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """""" Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+
+    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+    False
+    >>> haslop with a threshold of 0.3
+    True
+
+    Args:
+        numbers (List[float]): List of float numbers to check.
+        threshold (float): The maximum allowed difference between two numbers.
+
+    Returns:
+        bool: True if two elements are closer to each other than the threshold, False otherwise.
+    """"""
+
+    for i in range(len(numbers)):
+        for j in range(i + 1, len(numbers)):
+            if abs(numbers[i] - numbers[j]) < threshold:
+                return True
+    return False
+```
+
+This function checks each pair of numbers in the list to see if their absolute difference is less than the threshold. If it finds such a pair, it immediately returns `True`. If it goes through the entire list without finding such a pair, it returns `False`. This solution has a time complexity of O(n^2), where n is the length of the list.
+
+Please note that for larger lists, this function might not be efficient enough due to its quadratic time complexity. If performance is a concern, you might want to look into more efficient algorithms, such as sorting the list first and then using two pointers to find pairs of elements within the threshold distance in a single pass. However, this would increase the time and space complexity of the solution.",humaneval,2,1.0
+eval_1790415881702,phi3.5:3.8b,163,547,12.4923,9.2023,31.79,1109.1875,712.0283,1.3017,True,"```python
+from typing import List
+import re
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    # Remove all spaces from the input string
+    paren_string = parenноси_string.replace("" "", """")
+    
+    # Use regular expression to find all balanced groups of parentheses
+    # The pattern ((\((?:[^()]|(?R))*\))+) matches groups of parentheses
+    matches = re.findall(r""(\(((?:[^()]|(?R))*\))+)"", paren_string)
+    
+    # Return the list of matched groups
+    return matches
+```
+
+This function uses regular expressions to find all balanced groups of parentheses in the input string. It first removes any spaces from the input string, then uses the `re.findall` function to find all matches of the pattern `(\(((?:[^()]|(?R))*\))`+`, which matches groups of parentheses that are properly nested and not within each other. Finally, it returns the list of matched groups.
+
+Here's an example of how to use this function:
+
+```python
+>>> separate_paren_groups('( ) (( )) (( )( ))')
+['(', '(', '(', ')', ')', '(', '(', ')', ')']
+```
+
+This correctly separates the input string into individual strings containing balanced groups of parentheses. Note that each matched group is returned as a single-element list, as requested in the function docstring.
+
+If you want to further separate each group into individual parentheses, you can modify the function like this:
+
+```python
+def separate_paren_groups(paren_string: str) -> List[str]:
+    paren_string = paren_string.replace("" "", """")
+    matches = re.findall(r""(\(((?:[^()]|(?R))*\))+)"", parendict_string)
+    separated_groups = [list(match[1:-1]) for match in matches]
+    return separated_groups
+```
+
+Here's an example of how to use this modified function:
+
+```python
+>>> separate_paren_groups('( ) (( )) (( )( ))')
+[['(', '(', '(', ')', ')'], ['(', '(', ')', '(', ')']]
+```
+
+This separates each matched group of parentheses into individual parentheses, as requested in the function docstring.",humaneval,2,1.0
+eval_1790415906964,phi3.5:3.8b,69,116,5.016,4.3738,31.79,376.7964,217.3274,1.8735,True,"The relationship between the premise and hypothesis in this case is entailment. The premise states that ""The new rights are nice enough,"" which suggests that there is a positive attitude towards the new rights. The hypothesis, ""Everyone really likes the newest benefits,"" aligns with this positive sentiment, implying that people appreciate or enjoy the benefits. Both statements convey a similar meaning, with the hypothesis further supporting the idea presented in the premise. Therefore, the hypothesis entails the information provided in the premise, making the relationship an entailment.",mnli,2,0.0
+eval_1790415931755,phi3.5:3.8b,88,92,9.6714,9.1682,31.79,463.3895,155.9159,1.6947,True,"Contradiction.
+
+The premise states that the site includes a searchable database of Government Executive articles, while the hypothesis claims that the articles are not able to be searched. These two statements directly contradict each other, as they present opposing facts regarding the searchability of the Government Executive articles on the website.
+
+Therefore, the relationship between the premise and hypothesis is a contradiction.
+
+Relationship: Contradiction.",mnli,2,1.0
+eval_1790415956101,phi3.5:3.8b,232,2,9.1927,9.1848,31.79,434.6589,142.4041,71.2021,True,France,squad,2,1.0
+eval_1790415975245,phi3.5:3.8b,233,10,4.4578,4.4035,31.79,301.3294,159.6054,15.9605,True,10th and 11th centuries,squad,2,1.0
+eval_1790415999248,phi3.5:3.8b,49,64,9.5145,9.1545,31.79,464.9607,162.473,2.5386,True,"The sentiment of the movie review provided is 'positive'. The use of the words ""charming"" and ""affecting"" conveys a sense of enjoyment and emotional impact, which generally indicates a favorable opinion about the movie. Therefore, we can classify this sentiment as positive.",sst2,2,1.0
+eval_1790416029684,phi3.5:3.8b,46,72,9.577,9.1782,31.79,446.4982,142.024,1.9726,True,"Negative
+
+The sentiment expressed in the movie review can be classified as 'negative.' The terms ""unflinchingly bleak"" and ""desperate"" indicate a critical perspective, suggesting that the reviewer perceives the movie as hopelessly grim or lacking in any positive aspects, which aligns with a negative sentiment.",sst2,2,1.0
+eval_1790415672326,mistral:7b,1077,119,13.8407,12.5993,31.79,831.1214,391.0954,3.2865,True,"- Zully Broussard donated her kidney to a stranger, which initiated a chain reaction of kidney transplants involving six patients and six donors.
+- The process involved genetic matching of donor-recipient pairs using a computer program called MatchGrid, created by David Jacobs.
+- This chain of surgeries, including the donation by Broussard, is rare and considered significant due to the increased options for matching donors and recipients, thanks to the inclusion of altruistic donors like Broussard.",cnn_dailymail,3,0.3421052631578948
+eval_1790415745818,mistral:7b,1839,277,8.3016,5.3817,31.79,973.2005,709.2757,2.5606,True,"- On April 6, 1996, the first Major League Soccer (MLS) match was played between San Jose Clash and DC United, marking the start of professional soccer in the United States.
+- Looking back, the early MLS had unique rules and low attendances, but over the past 20 years, the league has progressed significantly. Attendance has increased, more teams have been added, and a new domestic TV and media rights deal with FOX, ESPN, and Univision worth $700 million over eight years has been secured.
+- The MLS has faced financial challenges in its early years, with losses of up to $250 million in the first five years and only 10 out of 19 teams reported to be profitable in 2013. However, the interest in soccer in the US has grown, with high viewership for the 2014 World Cup and the addition of new teams such as Orlando City Soccer Club and New York City FC.
+- The league's player acquisition rules, such as the salary cap and designated player rule, have been criticized for limiting the attractiveness of the MLS for top players. The league is looking to attract younger players with European passports to increase its competitive level and financial success.",cnn_dailymail,3,0.12820512820512822
+eval_1790415775038,mistral:7b,109,245,6.9038,4.436,31.79,717.2681,497.7805,2.0318,True,"Step 1: Determine the total number of eggs laid by Janet's ducks per day.
+Total eggs = 16 eggs per day (given in the problem)
+
+Step 2: Determine the number of eggs Janet uses for breakfast and baking muffins.
+Number of eggs for breakfast = 3 eggs
+Number of eggs for baking muffins = 4 eggs
+
+Step 3: Calculate the number of eggs left for selling at the farmers' market.
+Remaining eggs = Total eggs - (Breakfast eggs + Muffin eggs)
+Remaining eggs = 16 - (3 + 4)
+Remaining eggs = 16 - 7
+Remaining eggs = 9 eggs
+
+Step 4: Calculate the amount of money Janet makes from selling the remaining eggs at the farmers' market daily.
+Daily earnings = Remaining eggs * Price per egg
+Daily earnings = 9 eggs * $2 per egg
+Daily earnings = $18
+
+#### [final answer]
+The answer is that Janet makes $18 every day at the farmers' market.",gsm8k,3,1.0
+eval_1790415798694,mistral:7b,68,135,3.4346,2.0771,31.79,340.4886,231.2936,1.7133,True,"Let's break it down:
+
+1. The robe takes 2 bolts of blue fiber.
+2. The amount of white fiber it takes is half of the blue fiber. So, it takes half of 2, which is 1 bolt of white fiber.
+3. To find the total number of bolts, we add the number of bolts for both colors:
+
+Total bolts = Blue bolts + White bolts
+= 2 bolts (blue) + 1 bolt (white)
+= 3 bolts
+
+#### [final answer: The robe takes 3 bolts in total.]",gsm8k,3,1.0
+eval_1790415828283,mistral:7b,158,264,4.7944,2.1152,31.79,658.575,506.1503,1.9172,True,"To complete the function, we can use a for loop to iterate through the list and a nested loop to compare each number with the remaining numbers. If we find two numbers that are closer than the given threshold, we return `True`. If not, we return `False`. Here's the completed function:
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """""" Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+    """"""
+    for i in range(len(numbers) - 1):
+        for j in range(i + 1, len(numbers)):
+            if abs(numbers[i] - numbers[j]) <= threshold:
+                return True
+    return False
+```
+
+This function has a time complexity of O(n^2) due to the nested loops, but it's efficient enough for small to moderate-sized lists. For larger lists, consider using a sorting algorithm and binary search to improve the time complexity to O(n log n). However, this would make the function more complex and less efficient for small lists.",humaneval,3,1.0
+eval_1790415862658,mistral:7b,155,469,7.1219,2.2432,31.79,1116.6064,890.1849,1.898,True,"Here's the completed Python function for separating parentheses groups:
+
+```python
+import re
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    """""" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to
+    separate those group into separate strings and return the list of those.
+    Separate groups are balanced (each open brace is properly closed) and not nested within each other
+    Ignore any spaces in the input string.
+    """"""
+    # Remove all spaces from the input string
+    paren_string = re.sub(r'\s', '', paren_string)
+
+    # Initialize an empty list to store the balanced groups
+    groups = []
+
+    # Iterate over each character in the modified string
+    for char in paren_string:
+        # If we encounter an open parenthesis, start a new group
+        if char == '(':
+            # Create an empty string to store the current group
+            group = ''
+        # If we encounter a closing parenthesis, check if the group is balanced
+        elif char == ')':
+            # If the group is empty or the last character added was an open parenthesis, the group is not balanced
+            if not group or group[-1] != '(':
+                raise ValueError(""Invalid parentheses string"")
+            # If the group is balanced, add it to the list and remove the last character
+            group = group[:-1]
+        # If we encounter any other character, simply add it to the current group
+        else:
+            group += char
+
+    # Add the last group (if any) to the list
+    if group:
+        groups.append(group)
+
+    return groups
+```
+
+This function first removes all spaces from the input string, then checks each character to determine whether to start a new group, close an existing one, or simply add it to the current group. Once a group is closed, it checks if the group is balanced before adding it to the list. If the input string is not balanced, the function raises a ValueError.",humaneval,3,1.0
+eval_1790415896154,mistral:7b,61,2,2.2387,2.206,31.79,175.3139,104.1415,52.0708,True,neutral,mnli,3,1.0
+eval_1790415916512,mistral:7b,81,3,4.6866,4.662,31.79,312.1465,163.1481,54.3827,True,contradiction,mnli,3,1.0
+eval_1790415941297,mistral:7b,220,8,4.796,4.7225,31.79,322.5119,170.037,21.2546,True,Normandy is located in France.,squad,3,1.0
+eval_1790415965216,mistral:7b,221,21,4.9182,4.7147,31.79,298.4428,142.0837,6.7659,True,The Normans were in Normandy from the 10th and 11th centuries.,squad,3,1.0
+eval_1790415984184,mistral:7b,42,3,4.7114,4.6872,31.79,290.1532,140.3678,46.7893,True,Positive,sst2,3,1.0
+eval_1790416014547,mistral:7b,40,3,9.7211,9.6969,31.79,483.9924,174.9384,58.3128,True,Negative,sst2,3,1.0

@@ -1,0 +1,120 @@
+test_id,model_used,prompt_token_count,output_token_count,latency_seconds,ttft_seconds,p_idle_watts,total_energy_joules,net_energy_joules,joules_per_token,nvml_used,response_text,dataset,target_tier,quality_score
+eval_1790416082601,qwen3:8b,968,487,30.9702,16.0217,13.53,2139.5787,1720.6605,3.5332,True,"- Zully Broussard's altruistic kidney donation to a stranger triggered a chain of six transplants via data-driven genetic matching, expanding her impact beyond a single recipient.  
+- A computer program (MatchGrid) enabled rapid pairing of donor-recipient chains, reducing transplant coordination time from months to weeks and facilitating complex, multi-patient swaps.  
+- The operation involved over 40 medical staff and multiple surgeons, highlighting the collaborative effort to achieve a rare, large-scale transplant chain.",cnn_dailymail,3,0.27499999999999997
+eval_1790416131769,qwen3:8b,1688,494,11.9486,5.9576,13.53,1726.608,1564.9854,3.168,True,"- **Historic debut and growth**: The first MLS match in 1996 marked a bold start for American soccer, evolving into a thriving league with 20 teams, higher attendances, and a $700M media deal, reflecting its transformation into a major sport in the U.S.  
+- **Challenges and strategies**: Early financial struggles and team closures highlighted hurdles, but the league now balances a salary cap with strategies to attract young European talent and high-profile players to boost competitiveness.  
+- **Future aspirations**: Despite challenges, MLS aims to rival global leagues by leveraging player trading, scouting, and reinvestment, with optimism about becoming a top-tier sport in the U.S. within a decade.",cnn_dailymail,3,0.1651376146788991
+eval_1790416170517,qwen3:8b,102,406,10.0561,5.3139,13.53,1355.5512,1219.5275,3.0038,True,"Janet’s ducks lay 16 eggs per day. She uses 3 eggs for breakfast and 4 eggs for muffins, totaling $3 + 4 = 7$ eggs. The remaining eggs for sale are $16 - 7 = 9$. At $2 per egg, her daily earnings are $9 \times 2 = 18$.  
+
+#### [final answer]",gsm8k,3,1.0
+eval_1790416207720,qwen3:8b,64,311,5.7045,2.0792,13.53,864.0024,786.84,2.53,True,"The robe requires 2 bolts of blue fiber. The white fiber needed is half of that amount, which is 2 ÷ 2 = 1 bolt. Adding the blue and white fibers together: 2 + 1 = 3.  
+
+#### [final answer]",gsm8k,3,1.0
+eval_1790416263441,qwen3:8b,143,2252,29.4757,2.3101,13.53,6111.5349,5712.832,2.5368,True,"To solve the problem efficiently, we need to determine if any two numbers in the given list are closer to each other than a specified threshold. A naive approach would involve checking all pairs, which leads to an $O(n^2)$ time complexity. However, by sorting the list first, we can reduce the problem to checking only adjacent elements, which results in an $O(n \log n)$ time complexity due to the sorting step, followed by a linear pass.
+
+---
+
+### ✅ Key Observations
+
+- After sorting, the closest elements in the list will be adjacent.
+- The difference between any two elements in a sorted list is minimized between consecutive elements.
+- Therefore, we only need to check the differences between consecutive elements in the sorted list.
+
+---
+
+### ✅ Implementation
+
+Here's the efficient and correct Python implementation of the function:
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    sorted_numbers = sorted(numbers)
+    for i in range(len(sorted_numbers) - 1):
+        if sorted_numbers[i+1] - sorted_numbers[i] < threshold:
+            return True
+    return False
+```
+
+---
+
+### 📌 Explanation
+
+- **Sorting**: The list is sorted to ensure that the closest elements are adjacent.
+- **Linear Check**: After sorting, we iterate through the list and compare each pair of consecutive elements.
+- **Early Exit**: As soon as a pair is found where the difference is less than the threshold, the function returns `True`.
+- **Edge Cases**: If the list has fewer than two elements, the loop does not run, and the function returns `False`, which is correct.
+
+---
+
+### 🧪 Example Test Cases
+
+```python
+print(has_close_elements([1.0, 2.0, 3.0], 0.5))           # False
+print(has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3))  # True
+print(has_close_elements([2.0, 2.0], 0.1))                # True
+print(has_close_elements([1.0, 3.0], 0.5))                # False
+```
+
+---
+
+### 🧠 Time and Space Complexity
+
+- **Time Complexity**: $O(n \log n)$ due to sorting.
+- **Space Complexity**: $O(n)$ for the sorted list (assuming in-place sorting is not used; Python’s `sorted()` returns a new list).
+
+---
+
+This approach is both efficient and easy to understand, making it ideal for most practical use cases where the threshold is non-negative.",humaneval,3,1.0
+eval_1790416491027,qwen3:8b,134,9536,122.304,2.3858,13.53,26960.1392,25305.7969,2.6537,True,"Here's a complete Python program that reads a string input and counts the number of vowels in it, regardless of case:
+
+```python
+# Get the input string from the user
+s = input(""Enter a string: "")
+
+# Convert the string to lowercase for case-insensitive checking
+s = s.lower()
+
+# Initialize a counter for vowels
+vowel_count = 0
+
+# Define the set of vowels
+vowels = {'a', 'e', 'i', 'o', 'u'}
+
+# Iterate through each character in the string
+for char in s:
+    if char in vowels:
+        vowel_count += 1
+
+# Print the total number of vowels
+print(f""The number of vowels in the string is: {vowel_count}"")
+```
+
+### Explanation:
+1. **Input Handling**: The program uses `input()` to read a string from the user.
+2. **Case Insensitivity**: The string is converted to lowercase using `lower()` to ensure that both uppercase and lowercase vowels are counted.
+3. **Vowel Checking**: A set of vowels is defined for efficient lookup. Each character in the string is checked against this set.
+4. **Counting**: A counter variable `vowel_count` is incremented whenever a vowel is found.
+5. **Output**: The final count is printed using an f-string for clarity.
+
+### Example:
+If the input is `""Hello, World!""`, the output will be:
+```
+The number of vowels in the string is: 3
+```
+
+This program handles all edge cases, including uppercase letters, non-alphabetic characters, and empty strings.",humaneval,3,0.0
+eval_1790416647770,qwen3:8b,56,793,11.7753,2.421,13.53,2126.1184,1966.8398,2.4803,True,"The premise ""The new rights are nice enough"" expresses a general positive assessment, but it does not assert universal approval. The hypothesis ""Everyone really likes the newest benefits"" makes a strong, universal claim about collective preference. While ""rights"" and ""benefits"" might overlap in some contexts, the premise's vagueness (""nice enough"") does not logically entail the hypothesis's specific assertion about universal liking. Similarly, the premise does not contradict the hypothesis, as it neither denies universal approval nor provides evidence against it. Thus, the relationship is **neutral**.
+
+**Answer:** neutral",mnli,3,1.0
+eval_1790416720346,qwen3:8b,75,426,10.289,5.3018,13.53,1433.3959,1294.2225,3.0381,True,"The premise states that the website features a ""searchable database of Government Executive articles,"" which directly asserts the ability to search these articles. The hypothesis claims the opposite: ""The Government Executive articles housed on the website are not able to be searched."" 
+
+Since the premise explicitly confirms the searchability of the articles, while the hypothesis denies it, the two statements are logically incompatible. This makes the relationship a **contradiction**.
+
+**Answer:** contradiction",mnli,3,1.0
+eval_1790416766809,qwen3:8b,210,111,6.6245,5.3192,13.53,538.2283,448.622,4.0416,True,France,squad,3,1.0
+eval_1790416793156,qwen3:8b,211,176,7.3999,5.34,13.53,725.2218,625.1266,3.5519,True,The Normans were in Normandy during the 10th and 11th centuries.,squad,3,1.0
+eval_1790416820467,qwen3:8b,44,251,8.2155,5.3012,13.53,907.3268,796.2,3.1721,True,Answer: positive,sst2,3,1.0
+eval_1790416851151,qwen3:8b,41,200,7.5782,5.26,13.53,762.5455,660.039,3.3002,True,Answer: negative,sst2,3,1.0

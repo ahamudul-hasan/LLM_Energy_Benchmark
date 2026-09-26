@@ -1,0 +1,199 @@
+test_id,model_used,prompt_token_count,output_token_count,latency_seconds,ttft_seconds,p_idle_watts,total_energy_joules,net_energy_joules,joules_per_token,nvml_used,response_text,dataset,tier_selected,router_latency_ms,quality_score
+eval_1790416118765,qwen3:4b,968,534,6.4545,2.1055,13.53,933.1981,845.891,1.5841,True,"Here's a 2-3 bullet point summary of the article:
+
+*   Zully Broussard's altruistic kidney donation to a stranger triggered a chain reaction of six transplants through a data-driven matching system, helping six patients (including three parent-child pairs, one sibling pair, and one brother-sister-in-law pair).
+*   The complex chain reaction—where each recipient's donated kidney was matched to a new recipient—was enabled by a computer program (MatchGrid) that rapidly identified compatible pairs, significantly reducing the matching time from months to weeks compared to previous methods.
+*   This single act of generosity multiplied the impact, expanding potential matches from just a few options to 140, demonstrating how altruism combined with advanced genetic matching can save multiple lives.",cnn_dailymail,2,32.572,0.2201834862385321
+eval_1790416159435,qwen3:4b,1688,782,8.5635,2.1439,13.53,1394.8382,1279.0035,1.6356,True,"Here are 2-3 concise bullet points summarizing the article:
+
+- MLS began in 1996 as a pioneering league with modest attendance and unique early rules (e.g., shootouts for tied games), but has grown dramatically to 20 teams by 2015, with record-high attendances and a $700 million media deal.
+- Despite early financial struggles ($250M losses in first 5 years) and challenges like player retention and complex salary caps, the league has rapidly expanded its popularity (e.g., 25M viewers for US World Cup match) and is now focused on long-term growth through strategic youth development and European player sales.
+- The league aims to become a top US sport by attracting younger European-passport players who can be sold for profit, while addressing structural constraints like the salary cap that limit competitiveness with wealthier international leagues.",cnn_dailymail,2,27.914,0.17777777777777776
+eval_1790416200939,qwen3:8b,102,451,10.5938,5.3175,13.53,1425.5563,1282.2598,2.8431,True,"Janet’s ducks lay 16 eggs per day. She uses 3 eggs for breakfast and 4 eggs for muffins, totaling $3 + 4 = 7$ eggs. The remaining eggs for sale are $16 - 7 = 9$. At $2 per egg, her daily earnings are $9 \times 2 = 18$.  
+
+#### [final answer]",gsm8k,3,13.397,1.0
+eval_1790416232922,qwen3:8b,64,261,8.3322,5.2945,13.53,898.1909,785.4852,3.0095,True,"The robe requires 2 bolts of blue fiber. The white fiber needed is half of that amount, which is $ \frac{1}{2} \times 2 = 1 $ bolt. Adding the blue and white fibers together: $ 2 + 1 = 3 $. 
+
+#### [final answer]",gsm8k,3,11.548,1.0
+eval_1790416367671,qwen3:8b,143,2012,29.5608,5.3446,13.53,5673.6372,5273.7837,2.6212,True,"To solve the problem of determining whether any two numbers in a list are closer to each other than a given threshold, we can leverage a more efficient approach than checking all possible pairs.
+
+---
+
+### ✅ Efficient Strategy
+
+Instead of comparing all pairs of elements (which results in O(n²) time complexity), we can sort the list first. Sorting allows us to only compare **consecutive elements**, since the closest elements in a sorted list will always be adjacent. This reduces the time complexity to **O(n log n)** due to the sorting step, which is significantly more efficient for large input sizes.
+
+---
+
+### 📌 Implementation
+
+Here's the complete and efficient implementation of the `has_close_elements` function:
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """"""
+    Check if in the given list of numbers, any two numbers are closer to each other than the given threshold.
+
+    Args:
+        numbers: A list of float numbers.
+        threshold: A float value representing the maximum allowed distance between two numbers.
+
+    Returns:
+        True if any two numbers are closer than the threshold, False otherwise.
+
+    Examples:
+        >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+        False
+        >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+        True
+    """"""
+    numbers.sort()
+    for i in range(len(numbers) - 1):
+        if numbers[i + 1] - numbers[i] < threshold:
+            return True
+    return False
+```
+
+---
+
+### 📌 Explanation
+
+- **Sorting**: The list is sorted in ascending order.
+- **Consecutive Comparison**: For each pair of consecutive elements in the sorted list, we check if their difference is **less than** the threshold.
+- **Early Return**: As soon as a pair is found that satisfies the condition, the function returns `True`.
+- **Edge Cases**: If the list has fewer than two elements, the loop doesn't run, and the function returns `False` by default, which is correct.
+
+---
+
+### 🧪 Example Walkthrough
+
+#### Example 1:
+```python
+has_close_elements([1.0, 2.0, 3.0], 0.5)
+```
+- Sorted list: `[1.0, 2.0, 3.0]`
+- Differences: `1.0`, `1.0` → both are **≥ 0.5**
+- ✅ Returns: `False`
+
+#### Example 2:
+```python
+has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+```
+- Sorted list: `[1.0, 2.0, 2.8, 3.0, 4.0, 5.0]`
+- Differences: `1.0`, `0.8`, `0.2`, `1.0`, `1.0` → `0.2 < 0.3`
+- ✅ Returns: `True`
+
+---
+
+### ⏱ Time Complexity
+
+- Sorting: **O(n log n)**
+- Consecutive comparison: **O(n)**
+- **Overall Complexity**: **O(n log n)**
+
+This is optimal for most practical applications and handles large lists efficiently.",humaneval,3,16.728,1.0
+eval_1790416634954,qwen3:8b,134,3244,44.8503,5.3339,13.53,9138.1929,8531.5256,2.6299,True,"To solve the problem of separating balanced parentheses groups from a string, we need to process the string while ignoring spaces and identifying each balanced group of parentheses. A group is defined as a sequence of parentheses that starts with an opening parenthesis `(` and ends with a closing parenthesis `)` such that the number of opening and closing brackets is equal at every step.
+
+---
+
+### ✅ Key Observations
+
+1. **Spaces are to be ignored**: We first remove all spaces from the input string.
+2. **Group Detection**: Each group is a balanced sequence of parentheses. We can detect the end of a group when the balance of parentheses (i.e., the number of opening minus closing brackets) becomes zero.
+3. **Efficient Processing**: By iterating through the string and tracking the balance, we can split the string into groups when the balance returns to zero.
+
+---
+
+### 🧠 Algorithm
+
+1. **Preprocessing**: Remove all spaces from the input string.
+2. **Track Balance**: As we iterate through the characters:
+   - Increase the balance for each `(`.
+   - Decrease the balance for each `)`.
+   - When the balance becomes zero, we have found a complete group.
+3. **Group Collection**: Append the current group to the result list and reset the current group.
+
+---
+
+### ✅ Final Code
+
+```python
+from typing import List
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    processed = paren_string.replace(' ', '')
+    result = []
+    current_group = []
+    balance = 0
+
+    for char in processed:
+        if char == '(':
+            current_group.append(char)
+            balance += 1
+        elif char == ')':
+            current_group.append(char)
+            balance -= 1
+
+        if balance == 0:
+            result.append(''.join(current_group))
+            current_group = []
+
+    return result
+```
+
+---
+
+### 🧪 Example Test
+
+```python
+print(separate_paren_groups('( ) (( )) (( )( ))'))
+# Output: ['()', '(())', '(()())']
+```
+
+This function efficiently separates the groups by iterating through the string once and maintaining a balance counter, ensuring that each group is processed in linear time.",humaneval,3,17.891,1.0
+eval_1790416708993,qwen3:4b,56,2880,25.1066,2.1992,13.53,5129.8059,4790.2014,1.6633,True,"The NLI (Natural Language Inference) relationship between the premise and hypothesis is **neutral**.
+
+### Explanation:
+- **Premise**: ""The new rights are nice enough"" – This statement indicates that the new rights have a sufficient level of pleasantness or acceptability. It is a general assertion about the quality of the rights without specifying who or how they are perceived.
+- **Hypothesis**: ""Everyone really likes the newest benefits"" – This statement claims that all people have a strong positive opinion about the newest benefits. It involves a universal quantifier (""everyone"") and a strong emotional response (""really likes"").
+
+### Why neutral?
+- **No entailment**: The premise does not logically imply the hypothesis. The phrase ""nice enough"" describes a property of the rights (e.g., they are adequate or satisfactory), but it does not guarantee that ""everyone"" likes the ""newest benefits."" The hypothesis introduces new elements: the focus shifts from ""rights"" to ""benefits"" (which are distinct concepts), the inclusion of ""everyone"" (a universal claim that the premise does not address), and the strong verb ""really likes"" (which goes beyond the subjective ""nice enough"" of the premise). For example, the new rights could be nice enough for some people but disliked by others, or ""benefits"" might not refer to the same thing as ""rights"" in context.
+- **No contradiction**: The premise and hypothesis are not mutually exclusive. It is possible for the new rights to be nice enough while everyone likes the newest benefits (if ""rights"" and ""benefits"" are interpreted broadly in a specific context), or for the premise to be true even if the hypothesis is false (e.g., the rights are nice enough but not universally liked). There is no direct logical conflict between the statements.
+- **Neutral relationship**: In NLI, a neutral relationship occurs when the premise and hypothesis are unrelated or independent in meaning, neither entailing nor contradicting the other. Here, the sentences share some contextual similarity (e.g., ""new"" vs. ""newest""), but the key differences—such as the distinction between ""rights"" and ""benefits,"" the absence of a universal subject in the premise, and the differing levels of specificity (qualitative vs. universal preference)—mean that the relationship is neutral. The premise provides no information about people's opinions or the scope of ""likes,"" so it cannot be used to infer the hypothesis.
+
+### Additional context:
+- In NLI tasks, the focus is on semantic relationships without relying on external knowledge. The phrase ""a newest"" in the hypothesis appears to be a typo (likely meant to be ""the newest""), but this does not change the overall neutral relationship.
+- This analysis aligns with standard NLI classifications, where neutral is chosen when the sentences are contextually similar but not logically connected.
+
+**Relationship: neutral**",mnli,2,9.874,1.0
+eval_1790416759129,qwen3:4b,75,1341,12.6756,2.1698,13.53,2322.1529,2150.6961,1.6038,True,"The NLI (Natural Language Inference) relationship between the premise and hypothesis is **contradiction**.
+
+### Explanation:
+- **Premise**: ""This site includes a list of all award winners and a searchable database of Government Executive articles.""  
+  This explicitly states that the Government Executive articles are part of a ""searchable database,"" meaning the articles can be searched on the website.
+  
+- **Hypothesis**: ""The Government Executive articles housed on the website are not able to be searched.""  
+  This directly claims that the Government Executive articles cannot be searched.
+
+The premise and hypothesis are mutually exclusive:
+- The premise confirms that the articles are searchable (due to the ""searchable database"" description).
+- The hypothesis claims the opposite—that the articles are not searchable.
+- Therefore, the hypothesis contradicts the premise. Given the premise, the hypothesis must be false.
+
+In NLI terms:
+- **Entailment** would mean the hypothesis logically follows from the premise (e.g., if the premise implied the hypothesis was true).
+- **Neutral** would mean the premise neither supports nor contradicts the hypothesis (e.g., if there was no relevant information).
+- **Contradiction** is the correct classification here because the premise and hypothesis cannot both be true; they directly oppose each other.
+
+This relationship is a clear contradiction, as the premise provides positive evidence of searchability, while the hypothesis denies it entirely.
+
+**Relationship: contradiction**",mnli,2,11.89,1.0
+eval_1790416784700,qwen3:4b,210,306,4.3758,2.0715,13.53,541.4705,482.2815,1.5761,True,France,squad,2,15.275,1.0
+eval_1790416811197,qwen3:4b,211,312,4.4431,2.0559,13.53,558.0776,497.9787,1.5961,True,10th and 11th centuries,squad,2,19.549,1.0
+eval_1790416842514,qwen3:1.7b,44,250,3.2496,2.0779,13.53,247.1088,203.1538,0.8126,True,"The sentiment of the review is **positive**. The use of adjectives like ""charming"" and ""affecting"" conveys a favorable impression, and the review does not contain any negative language or criticism.",sst2,1,10.038,1.0
+eval_1790416869511,qwen3:1.7b,41,305,3.4843,2.0819,13.53,307.2418,260.1119,0.8528,True,"The sentiment of the review is **negative**. The adjectives ""bleak"" and ""desperate"" convey a sense of hopelessness and desperation, which are typically associated with negative evaluations. 
+
+Answer: **negative**",sst2,1,8.045,1.0

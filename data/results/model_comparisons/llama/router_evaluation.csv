@@ -1,0 +1,130 @@
+test_id,model_used,prompt_token_count,output_token_count,latency_seconds,ttft_seconds,p_idle_watts,total_energy_joules,net_energy_joules,joules_per_token,nvml_used,response_text,dataset,tier_selected,router_latency_ms,quality_score
+eval_1790415193709,llama3.2:3b,961,130,3.0804,2.0445,15.45,247.1026,199.4955,1.5346,True,"Here are 3 concise bullet points summarizing the news article:
+
+• Zully Broussard, a California resident, donated one of her kidneys to a stranger, sparking a chain reaction that led to six patients receiving transplants, a rare long-chain transplanting.
+• The chain reaction was made possible by a donor-recipient pairing program, developed by computer programmer David Jacobs, which uses genetic profiles to quickly match up compatible donors and recipients.
+• Broussard's altruistic donation provided 139 new matching options, allowing the medical center to complete the complex chain of surgeries in just three weeks, a fraction of the time previously required.",cnn_dailymail,2,39.113,0.18000000000000002
+eval_1790415345035,llama3.2:3b,1641,129,2.8365,2.0369,15.45,240.5825,196.744,1.5251,True,"Here are 2-3 concise bullet points summarizing the news article:
+
+* Major League Soccer (MLS) is celebrating its 20th anniversary, having come a long way since its inaugural match in 1996, with increased attendance, team numbers, and media rights deals.
+* Despite its progress, the league still faces challenges in attracting and keeping top players, with a salary cap and restrictive rulebook making it difficult to compete with foreign clubs and attract exceptional talent.
+* Experts believe that a shift in strategy, such as emphasizing the signing of younger players with European passports, could help the league attract more top talent and increase its popularity.",cnn_dailymail,2,23.426,0.16216216216216217
+eval_1790415380223,llama3.1:8b,113,228,7.8145,5.32,15.45,849.8773,729.104,3.1978,True,"Let's break down the problem step by step.
+
+Janet's ducks lay 16 eggs per day.
+She eats 3 for breakfast, so that's 3 eggs taken out of the total.
+She bakes muffins using 4 eggs, so that's 4 eggs taken out of the total.
+
+Total eggs laid - Eggs eaten/baked = Eggs available for sale
+
+16 (eggs laid) - 3 (eggs eaten) - 4 (eggs used for muffins) = ? (eggs available for sale)
+
+Let's calculate the subtraction:
+16 - 3 = 13
+13 - 4 = 9
+
+Janet has 9 eggs available for sale.
+
+Now, let's calculate the daily income:
+Janet sells each egg for $2, and she has 9 eggs to sell. To find the total amount, multiply the number of eggs by the price per egg:
+9 eggs * $2 per egg = $18
+
+#### $18
+
+Note: The final answer is the daily income Janet makes from selling the eggs at the farmers' market, which is $18.",gsm8k,3,16.38,1.0
+eval_1790415404969,llama3.1:8b,76,197,7.2283,5.0261,15.45,759.3334,647.6205,3.2874,True,"Let's solve the problem step-by-step!
+
+Step 1: Let's understand the problem. A robe takes 2 bolts of blue fiber. This means that 2 bolts of blue fiber are needed to make the robe.
+
+Step 2: The problem states that half that much white fiber is needed. ""Half that much"" means half the amount of blue fiber, which is 2 bolts. To find half of 2, we can divide 2 by 2, which gives us 1 bolt.
+
+So, 1 bolt of white fiber is needed.
+
+Step 3: We need to find the total number of bolts needed. We already know that 2 bolts of blue fiber are needed, and 1 bolt of white fiber is needed. To find the total, we add the two numbers together:
+
+2 (blue) + 1 (white) = 3
+
+#### 3 ####
+
+#### 3 (final answer) ####|im_end|>",gsm8k,3,9.457,1.0
+eval_1790415439874,llama3.1:8b,156,323,8.5634,5.014,15.45,1058.6883,926.3406,2.8679,True,"I completed the function definition as follows:
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """""" Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+    
+    Args:
+        numbers (List[float]): A list of floating point numbers
+        threshold (float): The maximum allowed difference between two numbers
+    
+    Returns:
+        bool: True if two numbers are closer than the threshold, False otherwise
+    """"""
+    numbers.sort()  # Sort the list of numbers to make the search more efficient
+    for i in range(1, len(numbers) - 1):
+        # Compare each element with its adjacent elements
+        if abs(numbers[i] - numbers[i-1]) < threshold and \
+           abs(numbers[i] - numbers[i+1]) < threshold:
+            return True  # If any two adjacent elements are closer than the threshold
+    return False  # If no two elements are closer than the threshold
+```
+
+This function first sorts the input list of numbers. Then it iterates over the list, comparing each element with its adjacent elements. If it finds any two adjacent elements that are closer than the given threshold, it immediately returns True. If it doesn't find any such pair of elements, it returns False. The time complexity of this function is O(n log n) due to the sorting operation, where n is the number of elements in the input list. The space complexity is O(1) as it only uses a constant amount of space.",humaneval,3,15.908,1.0
+eval_1790415476411,llama3.1:8b,147,305,8.3949,5.0412,15.45,1014.6917,884.9487,2.9015,True,"Here is the correct implementation of the function:
+
+```python
+from typing import List
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    groups = []
+    group = ''
+    in_group = False
+    for char in paren_string:
+        if char == '(':
+            if in_group:
+                group += char
+            else:
+                in_group = True
+                group += char
+        elif char == ')':
+            if not in_group:
+                continue
+            group += char
+            if group.count('(') == group.count(')'):
+                groups.append(group)
+                group = ''
+                in_group = False
+    return groups
+```
+The function iterates over the input string. It maintains two states: whether it is currently inside a group (``in_group``) and the current group being constructed (``group``). When it encounters an open parenthesis, it checks if it is already inside a group; if not, it starts a new group. When it encounters a close parenthesis, it adds it to the current group and checks if the group is complete (i.e., the number of open and close parentheses is equal). If it is, it adds the group to the result list and resets the group and state. This way, it ensures that the generated groups are balanced and not nested within each other.
+
+The function handles the problem efficiently as it only iterates over the input string once and does not generate unnecessary groups. It returns the list of separated groups as requested.",humaneval,3,17.831,1.0
+eval_1790415503457,llama3.2:3b,56,161,3.2218,2.0743,15.45,256.3234,206.53,1.2828,True,"To determine the NLI (Natural Language Inference) relationship between the premise and hypothesis, we need to analyze the meaning of the two statements.
+
+**Premise:** ""The new rights are nice enough""
+This statement suggests that the new rights are satisfactory or meet some standard of quality, but it doesn't necessarily imply a strong positive attitude towards them.
+
+**Hypothesis:** ""Everyone really likes the newest benefits""
+This statement implies that everyone strongly prefers the newest benefits, which could be a stronger positive attitude than the premise suggests.
+
+Given this analysis, we can conclude that the hypothesis **entails** the premise. In other words, the hypothesis implies that the new rights are liked or enjoyed, which is a stronger statement than the premise.
+
+So, the correct answer is:
+
+**Relationship:** entailment",mnli,2,11.848,0.0
+eval_1790415530755,llama3.2:3b,75,177,3.0598,2.0389,15.45,263.0376,215.748,1.2189,True,"The correct answer is: neutral.
+
+Here's why:
+
+* Entailment: This option implies that the premise implies the hypothesis, which is not the case. The premise states that the website has a searchable database of Government Executive articles, so it's likely that the articles are searchable. The hypothesis states that the articles are not searchable, which is a contradiction to the premise.
+* Contradiction: This option implies that the premise and hypothesis are mutually exclusive, which is also not the case. The premise does not directly state that the articles are not searchable, so it's not a direct contradiction.
+* Neutral: This option implies that the premise does not imply the hypothesis, which is the correct interpretation. The premise does not provide any information that would suggest the articles are not searchable, so the relationship between the premise and hypothesis is neutral.
+
+Therefore, the correct answer is neutral.",mnli,2,13.526,1.0
+eval_1790415557276,llama3.2:3b,207,3,2.0527,2.0396,15.45,155.9394,124.2154,41.4051,True,France.,squad,2,21.9,1.0
+eval_1790415581845,llama3.2:3b,208,21,2.1552,2.032,15.45,158.144,124.8354,5.9445,True,The Normans gave their name to Normandy in the 10th and 11th centuries.,squad,2,21.752,1.0
+eval_1790415608275,llama3.2:1b,59,32,3.2103,3.0998,15.45,216.0944,166.48,5.2025,True,"The sentiment of the review is 'positive'. The phrase ""charming and often affecting journey"" suggests that the reviewer enjoyed and found value in the movie.",sst2,1,9.821,1.0
+eval_1790415639816,llama3.2:1b,56,45,3.2592,3.1055,15.45,244.2747,193.9044,4.309,True,"The sentiment of the review is 'negative'. The words 'unflinchingly bleak', 'desperate', and 'unlike' convey a sense of pessimism and criticism, indicating a negative opinion of the movie.",sst2,1,9.7,1.0

@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from feature_extractor import CPUFeatureExtractor
 
-TIER_MODEL_MAP = {
+DEFAULT_TIER_MODEL_MAP = {
     1: "llama3.2:1b",
     2: "llama3.2:3b",
     3: "llama3.1:8b"
@@ -28,7 +28,7 @@ TIER_MODEL_MAP = {
 class PromptRouter:
     """Online prompt complexity router."""
 
-    def __init__(self, model_path: Optional[str] = None):
+    def __init__(self, model_path: Optional[str] = None, tier_models: Optional[Dict[int, str]] = None):
         if model_path is None:
             model_path = os.path.join(os.path.dirname(__file__), "router_model.joblib")
 
@@ -42,14 +42,9 @@ class PromptRouter:
         self.tau1 = payload["tau1"]
         self.tau2 = payload["tau2"]
         use_emb = payload.get("use_embeddings", False)
-
-        # Ensure cross-version compatibility for scikit-learn LogisticRegression
-        estimators = [self.classifier]
-        if hasattr(self.classifier, "steps"):
-            estimators.extend([step for _, step in self.classifier.steps])
-        for est in estimators:
-            if est.__class__.__name__ == "LogisticRegression" and not hasattr(est, "multi_class"):
-                est.multi_class = "auto"
+        self.tier_models = dict(DEFAULT_TIER_MODEL_MAP)
+        if tier_models:
+            self.tier_models.update(tier_models)
 
         self.extractor = CPUFeatureExtractor(use_embeddings=use_emb)
 
@@ -88,7 +83,7 @@ class PromptRouter:
 
         return {
             "tier_selected": selected_tier,
-            "model_used": TIER_MODEL_MAP[selected_tier],
+            "model_used": self.tier_models[selected_tier],
             "probs": [round(p, 4) for p in probs],
             "router_latency_ms": round(latency_ms, 3),
             "router_energy_joules": round(energy_overhead_joules, 5),

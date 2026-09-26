@@ -1,1 +1,12 @@
-.venv
+.venv/
+
+# Python caches and local test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local runtime logs
+*.log
+
