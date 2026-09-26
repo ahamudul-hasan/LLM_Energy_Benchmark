@@ -223,29 +223,20 @@ def generate_cross_platform_plots(summary_4060: dict, summary_3060: dict, out_di
     print(f"Generated: {fig_jpt_path}")
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Generate Publication Figures")
-    parser.add_argument("--gpu", type=str, default=None, help="GPU identifier (e.g. rtx4060 or rtx3060ti)")
-    args = parser.parse_args()
-
-    results_dir = os.path.join("data", "results")
-
-    # Load primary summary
-    summary_path = os.path.join(results_dir, "summary_metrics.json")
+def run_plots_for_dir(data_dir: str, out_base_dir: str, gpu_override: str = None):
+    summary_path = os.path.join(data_dir, "summary_metrics.json")
     if not os.path.exists(summary_path):
-        print(f"Error: {summary_path} not found.")
-        sys.exit(1)
+        return None
 
     with open(summary_path, "r", encoding="utf-8") as f:
         summary = json.load(f)
 
-    df_b = pd.read_csv(os.path.join(results_dir, "static_tier_baselines.csv"))
-    df_r = pd.read_csv(os.path.join(results_dir, "router_evaluation.csv"))
+    df_b = pd.read_csv(os.path.join(data_dir, "static_tier_baselines.csv"))
+    df_r = pd.read_csv(os.path.join(data_dir, "router_evaluation.csv"))
 
-    # Determine GPU slug
     gpu_name = summary.get("gpu_device", "")
-    if args.gpu:
-        gpu_slug = args.gpu.lower().replace(" ", "")
+    if gpu_override:
+        gpu_slug = gpu_override.lower().replace(" ", "")
     elif "3060" in gpu_name:
         gpu_slug = "rtx3060ti"
     elif "4060" in gpu_name:
@@ -254,37 +245,87 @@ def main():
         gpu_slug = "rtx4060"
 
     gpu_label = "RTX 3060 Ti" if "3060" in gpu_slug else "RTX 4060"
-
-    # 1. Generate in GPU-specific folder (e.g. figures/rtx4060/ or figures/rtx3060ti/)
-    target_out_dir = os.path.join("figures", gpu_slug)
+    target_out_dir = os.path.join(out_base_dir, gpu_slug)
     generate_gpu_plots(summary, df_b, df_r, target_out_dir, gpu_label)
+    return summary, gpu_slug
 
-    # 2. Also update top-level figures/ folder for convenience
-    generate_gpu_plots(summary, df_b, df_r, "figures", gpu_label)
 
-    # 3. Check if cross-platform data exists
-    summary_4060_path = os.path.join(results_dir, "rtx4060", "summary_metrics.json")
-    if not os.path.exists(summary_4060_path):
-        summary_4060_path = os.path.join(results_dir, "summary_metrics_rtx4060.json")
+def main():
+    parser = argparse.ArgumentParser(description="Generate Publication Figures")
+    parser.add_argument("--gpu", type=str, default=None, help="GPU identifier (e.g. rtx4060 or rtx3060ti)")
+    parser.add_argument("--data-dir", type=str, default=None, help="Directory containing summary_metrics.json and CSVs")
+    parser.add_argument("--out-dir", type=str, default=None, help="Output directory for plots")
+    parser.add_argument("--all", action="store_true", help="Generate all available benchmark sizes (12 and 600 examples)")
+    args = parser.parse_args()
 
-    summary_3060_path = os.path.join(results_dir, "rtx3060ti", "summary_metrics.json")
-    if not os.path.exists(summary_3060_path):
-        summary_3060_path = os.path.join(results_dir, "summary_metrics_rtx3060ti.json")
+    results_dir = os.path.join("data", "results")
 
-    # If current run is 3060 Ti, use current summary as 3060 Ti data
-    if "3060" in gpu_slug:
-        s3060 = summary
-    elif os.path.exists(summary_3060_path):
-        with open(summary_3060_path, "r", encoding="utf-8") as f:
-            s3060 = json.load(f)
-    else:
-        s3060 = None
+    # If --all or default execution without specific out-dir: generate both 12 and 600 suites if available
+    pilot_4060_dir = os.path.join(results_dir, "pilot_12_rtx4060")
+    pilot_3060_dir = os.path.join(results_dir, "pilot_12_rtx3060ti")
+    full_4060_dir = os.path.join(results_dir, "full_600_rtx4060")
+    full_3060_dir = os.path.join(results_dir, "full_600_rtx3060ti")
 
-    if os.path.exists(summary_4060_path) and s3060 is not None:
-        with open(summary_4060_path, "r", encoding="utf-8") as f:
-            s4060 = json.load(f)
-        cross_out_dir = os.path.join("figures", "cross_platform")
-        generate_cross_platform_plots(s4060, s3060, cross_out_dir)
+    # Fallbacks for current active directories
+    if not os.path.exists(full_4060_dir) and os.path.exists(os.path.join(results_dir, "rtx4060")):
+        full_4060_dir = os.path.join(results_dir, "rtx4060")
+    if not os.path.exists(pilot_3060_dir) and os.path.exists(os.path.join(results_dir, "rtx3060ti")):
+        pilot_3060_dir = os.path.join(results_dir, "rtx3060ti")
+
+    # 1. Generate 12-example figures in figures/12_examples/
+    s_4060_12, s_3060_12 = None, None
+    if os.path.exists(pilot_4060_dir):
+        res = run_plots_for_dir(pilot_4060_dir, os.path.join("figures", "12_examples"), gpu_override="rtx4060")
+        if res:
+            s_4060_12 = res[0]
+    if os.path.exists(pilot_3060_dir):
+        res = run_plots_for_dir(pilot_3060_dir, os.path.join("figures", "12_examples"), gpu_override="rtx3060ti")
+        if res:
+            s_3060_12 = res[0]
+
+    if s_4060_12 is not None and s_3060_12 is not None:
+        cross_12_out = os.path.join("figures", "12_examples", "cross_platform")
+        generate_cross_platform_plots(s_4060_12, s_3060_12, cross_12_out)
+
+    # 2. Generate 600-example figures in figures/600_examples/
+    s_4060_600, s_3060_600 = None, None
+    if os.path.exists(full_4060_dir):
+        res = run_plots_for_dir(full_4060_dir, os.path.join("figures", "600_examples"), gpu_override="rtx4060")
+        if res:
+            s_4060_600 = res[0]
+    if os.path.exists(full_3060_dir):
+        res = run_plots_for_dir(full_3060_dir, os.path.join("figures", "600_examples"), gpu_override="rtx3060ti")
+        if res:
+            s_3060_600 = res[0]
+
+    if s_4060_600 is not None and s_3060_600 is not None:
+        cross_600_out = os.path.join("figures", "600_examples", "cross_platform")
+        generate_cross_platform_plots(s_4060_600, s_3060_600, cross_600_out)
+        generate_cross_platform_plots(s_4060_600, s_3060_600, os.path.join("figures", "cross_platform"))
+
+    # 3. Maintain standard/current run output for backwards compatibility
+    primary_data_dir = args.data_dir if args.data_dir else results_dir
+    summary_path = os.path.join(primary_data_dir, "summary_metrics.json")
+    if os.path.exists(summary_path):
+        with open(summary_path, "r", encoding="utf-8") as f:
+            summary = json.load(f)
+        df_b = pd.read_csv(os.path.join(primary_data_dir, "static_tier_baselines.csv"))
+        df_r = pd.read_csv(os.path.join(primary_data_dir, "router_evaluation.csv"))
+
+        gpu_name = summary.get("gpu_device", "")
+        if args.gpu:
+            gpu_slug = args.gpu.lower().replace(" ", "")
+        elif "3060" in gpu_name:
+            gpu_slug = "rtx3060ti"
+        elif "4060" in gpu_name:
+            gpu_slug = "rtx4060"
+        else:
+            gpu_slug = "rtx4060"
+
+        gpu_label = "RTX 3060 Ti" if "3060" in gpu_slug else "RTX 4060"
+        legacy_out = args.out_dir if args.out_dir else os.path.join("figures", gpu_slug)
+        generate_gpu_plots(summary, df_b, df_r, legacy_out, gpu_label)
+        generate_gpu_plots(summary, df_b, df_r, "figures", gpu_label)
 
     print("\n--- All plotting workflows complete! ---")
 

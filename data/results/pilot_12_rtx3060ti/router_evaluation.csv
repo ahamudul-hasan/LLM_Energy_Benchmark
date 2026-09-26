@@ -1,0 +1,71 @@
+test_id,model_used,prompt_token_count,output_token_count,latency_seconds,ttft_seconds,p_idle_watts,total_energy_joules,net_energy_joules,joules_per_token,nvml_used,response_text,dataset,tier_selected,router_latency_ms,quality_score
+eval_1789833655364,llama3.2:3b,961,135,7.8459,7.0365,14.76,514.8987,399.1086,2.9564,True,"Here are 3 concise bullet points summarizing the news article:
+
+• Zully Broussard donated one of her kidneys to a stranger, triggering a chain reaction that led to six patients receiving transplants, thanks to advanced genetic profiling and data processing.
+• The ""paired donation"" process, facilitated by a computer programmer, allowed for 12 patients to receive transplants, including 6 who received kidneys from donors and 6 who received them from Broussard.
+• The success of the transplant chain was made possible by data processing, which matched compatible donors and recipients, increasing the number of potential matches from 4 to 140, according to medical experts.",cnn_dailymail,2,33.903,0.1894736842105263
+eval_1789833672292,llama3.2:3b,1641,154,6.3672,5.378,14.76,474.965,380.9971,2.474,True,"Here are 3 concise bullet points summarizing the article:
+
+• The Major League Soccer (MLS) is celebrating its 20th anniversary, having grown significantly from its humble beginnings in 1996 with only 10 teams to its current 20 teams, including 4 new additions by 2020.
+• Despite its progress, the MLS still faces challenges in attracting and retaining top talent, with the salary cap and complex rules governing player transfers limiting its ability to compete with European leagues.
+• However, experts believe that the league is on the right track, with a focus on developing younger players with European passports and signing Designated Players (DPs) at the peak of their careers, which could help to raise the standard of the league and attract more top talent.",cnn_dailymail,2,42.968,0.1967213114754098
+eval_1789833687596,llama3.1:8b,113,170,4.3056,2.1541,14.76,455.3417,391.7999,2.3047,True,"Let's break down the problem step by step.
+
+1. Janet lays 16 eggs per day, but she eats 3 and uses 4 for baking muffins. So, she has:
+
+16 (eggs laid) - 3 (eggs eaten) - 4 (eggs used for baking) = 16 - 3 - 4 = 9 eggs remaining
+
+She has 9 eggs left for sale at the farmers' market.
+
+2. The problem asks how much she makes at the farmers' market, and it's specified that she sells the eggs for $2 per fresh duck egg. Since she has 9 eggs remaining, we multiply the number of eggs by the price per egg:
+
+9 eggs x $2 per egg = 9 x $2 = $18
+
+#### $18#### [final answer]",gsm8k,3,21.724,1.0
+eval_1789833700491,llama3.1:8b,76,191,4.5055,2.1931,14.76,490.6994,424.207,2.221,True,"Let's break down the problem step by step.
+
+Step 1: Understand the problem
+The problem states that the robe takes 2 bolts of blue fiber and half that much white fiber. This means we need to find the total number of bolts of fiber required.
+
+Step 2: Identify the given information
+* 2 bolts of blue fiber are required
+* Half that much white fiber is required. Since we don't know the exact number of white bolts, let's represent it as x. Therefore, x = 1/2 * 2 = 1 bolt
+
+Step 3: Solve the problem
+We need to find the total number of bolts. We have 2 bolts of blue fiber and 1 bolt of white fiber. To find the total, we add the number of bolts:
+Total bolts = 2 (blue) + 1 (white)
+= 3 bolts
+
+#### 3 bolts #### [final answer]",gsm8k,3,12.335,1.0
+eval_1789833712005,llama3.1:8b,156,104,3.4333,2.1226,14.76,276.2947,225.6265,2.1695,True,"I completed the function definition as follows:
+
+```python
+from typing import List
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """""" Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+    """"""
+    numbers.sort()
+    for i in range(1, len(numbers)):
+        if abs(numbers[i] - numbers[i-1]) < threshold:
+            return True
+    return False
+```",humaneval,3,18.9,1.0
+eval_1789833722330,llama3.1:8b,147,6,2.3824,2.3823,14.76,183.7746,148.6152,24.7692,True,,humaneval,3,21.329,0.0
+eval_1789833733181,llama3.2:3b,56,119,5.5967,4.8825,14.76,392.8679,310.2709,2.6073,True,"Let's analyze the relationship between the premise and hypothesis.
+
+The premise states that the new rights are ""nice enough"", which implies that they are acceptable or sufficient.
+
+The hypothesis states that ""Everyone really likes the newest benefits"", which suggests that the new rights are particularly well-received or enjoyed by everyone.
+
+The relationship between the premise and hypothesis is one of **entailment**, as the hypothesis can be inferred from the premise. In other words, the premise provides enough information to justify the conclusion that everyone likes the newest benefits.
+
+Therefore, the correct answer is: **Entailment**.",mnli,2,12.665,0.0
+eval_1789833746265,llama3.2:3b,75,55,5.1469,4.8132,14.76,393.9205,317.9626,5.7811,True,"The correct answer is: contradiction.
+
+The premise states that the site has a searchable database of Government Executive articles, while the hypothesis claims that the articles are not searchable. These two statements are mutually exclusive and cannot both be true at the same time, making them a contradiction.",mnli,2,14.838,1.0
+eval_1789833761574,llama3.2:3b,207,3,4.984,4.9656,14.76,339.6912,266.137,88.7123,True,France.,squad,2,29.543,1.0
+eval_1789833776583,llama3.2:3b,208,19,5.0638,4.9423,14.76,351.4511,276.7192,14.5642,True,The Normans in Normandy referred to the 10th and 11th centuries.,squad,2,28.755,1.0
+eval_1789833790680,llama3.2:1b,59,50,5.3807,5.1974,14.76,400.3759,320.9673,6.4193,True,"The sentiment of the review is 'positive'. The words 'charming' and 'often affecting' indicate a favorable opinion, while the phrase 'journey' is a neutral descriptor, but the overall tone suggests a positive assessment of the movie.",sst2,1,12.472,1.0
+eval_1789833798484,llama3.2:1b,56,44,2.4854,2.1657,14.76,180.7499,144.0699,3.2743,True,"The sentiment of the movie review is 'negative'. The words 'unflinching bleak' and 'desperate' convey a sense of pessimism and despair, indicating that the reviewer did not enjoy the movie.",sst2,1,13.082,1.0

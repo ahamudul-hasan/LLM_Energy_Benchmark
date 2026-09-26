@@ -118,15 +118,18 @@ echo ===========================================================================
 echo [6/6] BENCHMARK COMPLETE!
 echo.
 echo All results, CSV metrics, and figures have been generated:
-echo - RTX 3060 Ti Figures : figures\rtx3060ti\*.png
-echo - Comparison Figures  : figures\cross_platform\*.png
-echo - RTX 3060 Ti Data    : data\results\rtx3060ti\
+echo - 600 Examples Figures : figures\600_examples\rtx3060ti\*.png
+echo - 12 Examples Figures  : figures\12_examples\rtx3060ti\*.png
+echo - Comparison Figures   : figures\600_examples\cross_platform\*.png
+echo - Benchmark Data       : data\results\rtx3060ti\
 echo ===============================================================================
 echo.
 
-:: Automatically open figures folder in Windows Explorer
-if exist figures\rtx3060ti (
-    echo Opening RTX 3060 Ti figures folder...
+:: Automatically open 600 examples figures folder in Windows Explorer
+if exist figures\600_examples\rtx3060ti (
+    echo Opening 600-example figures folder...
+    start explorer figures\600_examples\rtx3060ti
+) else if exist figures\rtx3060ti (
     start explorer figures\rtx3060ti
 ) else (
     if exist figures start explorer figures
