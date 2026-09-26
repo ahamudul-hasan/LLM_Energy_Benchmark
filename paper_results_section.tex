@@ -1,5 +1,6 @@
 % =============================================================================
 % CHAPTER / SECTION: EMPIRICAL EVALUATION AND RESULTS (600-PROMPT BENCHMARK)
+% Single-column stacked figures with borders
 % Ready for integration into the research manuscript:
 % "A Comparative Analysis of Energy Efficiency Across Large Language Models"
 % Talha, Borno, Rabbi, Prianto (Department of CSE, United International University)
@@ -22,14 +23,16 @@ Table~\ref{tab:platform_specs} details the architectural parameters of the two d
 \caption{Microarchitectural Specifications of Evaluated GPU Platforms.}
 \label{tab:platform_specs}
 \small
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
-\textbf{Platform} & \textbf{GPU Model} & \textbf{Architecture} & \textbf{Process Node} & \textbf{TDP} & \textbf{VRAM} & \textbf{Quiescent $P_{\text{idle}}$} \\
+\textbf{Platform} & \textbf{GPU Model} & \textbf{Architecture} & \textbf{Process Node} & \textbf{TDP~(W)} & \textbf{VRAM} & \textbf{$Power_{\text{idle}}$~(W)} \\
 \midrule
-Platform A & GeForce RTX 4060 & Ada Lovelace & TSMC 4N & 115~W & 8~GB GDDR6 & $53.46 \pm 0.15\text{ W}$ \\
-Platform B & GeForce RTX 3060 Ti & Ampere & Samsung 8nm & 200~W & 8~GB GDDR6 & $66.12 \pm 0.18\text{ W}$ \\
+A & GeForce RTX 4060 & Ada Lovelace & TSMC 4N & 115 & 8~GB GDDR6 & $53.46 \pm 0.15$ \\
+B & GeForce RTX 3060 Ti & Ampere & Samsung 8nm & 200 & 8~GB GDDR6 & $66.12 \pm 0.18$ \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 Dynamic GPU power $P(t)$ was sampled at high frequency ($f_s = 20\text{ Hz}$, $50\text{ ms}$ interval) using an asynchronous daemon thread querying NVML hardware power sample buffers. To isolate dynamic inference power from platform quiescent power, a mandatory pre-flight baseline resting profiling period ($t_{\text{rest}} \ge 3.0\text{ s}$) was conducted before each evaluation stream. Total electrical energy ($E_{\text{total}}$) and net dynamic inference energy ($E_{\text{net}}$) were integrated numerically via the trapezoidal rule:
@@ -58,10 +61,10 @@ Table~\ref{tab:system_comparison} summarizes the empirical comparison between th
  & \textbf{Static 8B} & \textbf{Adaptive Router} & \textbf{Change} & \textbf{Static 8B} & \textbf{Adaptive Router} & \textbf{Change} \\
 \midrule
 Total Energy $E_{\text{total}}$ (kJ) & 360.37 & 410.58 & $+13.93\%$ & 462.59 & 398.48 & \textbf{$-13.86\%$} \\
-\textbf{Net Dynamic Energy $E_{\text{net}}$ (kJ)} & \textbf{121.25} & \textbf{151.48} & --- & \textbf{204.69} & \textbf{169.97} & \textbf{$-16.96\%$} \\
+Net Dynamic Energy $E_{\text{net}}$ (kJ) & 121.25 & 151.48 & --- & 204.69 & 169.97 & \textbf{$-16.96\%$} \\
 Mean Joules / Token (J/tok) & 2.0357 & 1.2631 & \textbf{$-37.95\%$} & 1.3613 & 1.7052 & --- \\
 Mean Task Quality ($\text{Score}$) & 0.7827 & 0.7448 & $-4.84\%$ & 0.7505 & 0.7139 & $-4.88\%$ \\
-\textbf{Quality Preservation Ratio (QPR)} & $100.00\%$ & \textbf{95.17\%} & Target Met & $100.00\%$ & \textbf{95.13\%} & Target Met \\
+Quality Preservation Ratio (QPR) & $100.00\%$ & \textbf{95.17\%} & Target Met & $100.00\%$ & \textbf{95.13\%} & Target Met \\
 Mean Serving Latency $T_{\text{e2e}}$ (s) & 7.454 & 8.077 & $+8.36\%$ & 6.528 & 5.774 & \textbf{$-11.55\%$} \\
 Mean TTFT (s) & 4.389 & 4.035 & \textbf{$-8.07\%$} & 3.834 & 3.518 & \textbf{$-8.24\%$} \\
 Router Overhead $\Delta t_{\text{route}}$ (ms) & --- & 22.79 & Negligible & --- & 18.61 & Negligible \\
@@ -70,57 +73,65 @@ Router Overhead $\Delta t_{\text{route}}$ (ms) & --- & 22.79 & Negligible & --- 
 }
 \end{table}
 
-The empirical findings from Table~\ref{tab:system_comparison} demonstrate four primary conclusions:
+The empirical findings from Table~\ref{tab:system_comparison} demonstrate two primary conclusions:
 \begin{enumerate}
     \item \textbf{Significant Energy Efficiency and Reduction}: On Platform~B (RTX 3060 Ti), dynamic routing achieved a substantial \textbf{16.96\% reduction in net dynamic energy} ($169.97\text{ kJ}$ vs. $204.69\text{ kJ}$) and reduced total wall-plug energy by \textbf{13.86\%} ($398.48\text{ kJ}$ vs. $462.59\text{ kJ}$). On Platform~A (RTX 4060), dynamic routing yielded a dramatic \textbf{37.95\% reduction in energy per output token} ($1.2631\text{ J/tok}$ vs. $2.0357\text{ J/tok}$), confirming that smaller tiers generate target tokens at substantially higher thermodynamic efficiency.
     \item \textbf{High Quality Preservation ($\ge 95.1\%$ QPR)}: Across both hardware environments, Quality Preservation Ratios exceeded expectations, achieving \textbf{95.17\%} on Platform~A and \textbf{95.13\%} on Platform~B. This verifies that the offline calibration thresholds ($\tau_1 = 0.1, \tau_2 = 0.1$, $\text{FNR} < 5\%$) successfully prevent quality degradation across diverse task domains.
-    \item \textbf{Accelerated Time-to-First-Token (TTFT)}: Because Tier~1 (1B) and Tier~2 (3B) models feature smaller parameter matrices and shorter prefill activation layers, prompt prefill latency dropped across both platforms, delivering an \textbf{8.07\% faster TTFT} on Platform~A and an \textbf{8.24\% faster TTFT} on Platform~B.
-    \item \textbf{Negligible Routing Overhead}: Host CPU feature extraction and inference executed in only \textbf{18.61~ms} on Platform~B and \textbf{22.79~ms} on Platform~A, confirming that CPU-based prompt classification incurs virtually zero serving penalty.
 \end{enumerate}
 
 \begin{figure}[htbp]
 \centering
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx4060/energy_and_joules_per_token.png}
+\setlength{\fboxsep}{1pt}%
+\setlength{\fboxrule}{0.5pt}%
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/rtx4060/energy_and_joules_per_token.png}}
 \caption*{(a) Platform A (RTX 4060, Ada Lovelace)}
-\end{minipage}
-\hfill
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx3060ti/energy_and_joules_per_token.png}
+\vspace{0.35cm}
+
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/rtx3060ti/energy_and_joules_per_token.png}}
 \caption*{(b) Platform B (RTX 3060 Ti, Ampere)}
-\end{minipage}
-\caption{Dynamic inference energy ($E_{\text{net}}$) and token energy intensity comparing the static 8B baseline against the adaptive complexity router across 600 prompts on Platform~A and Platform~B.}
+\caption{Dynamic inference energy ($E_{\text{net}}$) and energy intensity comparing the static 8B baseline against the adaptive complexity router across 600 prompts on Platform~A and Platform~B.}
 \label{fig:cross_platform_energy}
 \end{figure}
 
 \subsection{Workload Tier Distribution and Task-Level Breakdown}
 \label{subsec:task_breakdown}
 
-The multi-class prompt router operates with calibrated confidence thresholds ($\tau_1 = 0.1, \tau_2 = 0.1$). Across the 600 evaluated prompts, the router demonstrated consistent, deterministic tier allocations across both testbeds:
-\begin{itemize}
-    \item \textbf{Tier 1 (\texttt{Llama-3.2-1B}, 1.3~GB VRAM)}: \textbf{17.0\%} of queries (102 prompts, capturing 100\% of SST-2 sentiment queries and isolated low-complexity extractive queries).
-    \item \textbf{Tier 2 (\texttt{Llama-3.2-3B}, 2.0~GB VRAM)}: \textbf{49.7\%} of queries (298 prompts, capturing CNN/DailyMail summarization, MNLI entailment, and SQuAD v2.0 factual retrieval).
-    \item \textbf{Tier 3 (\texttt{Llama-3.1-8B}, 4.9~GB VRAM)}: \textbf{33.3\%} of queries (200 prompts, strictly reserved for GSM8K multi-step math and HumanEval Python code generation).
-\end{itemize}
-In aggregate, \textbf{66.7\% of all incoming queries} were successfully offloaded to smaller, lower-power model tiers without sacrificing foundation model reasoning capability on high-complexity tasks.
+The multi-class prompt router operates with calibrated confidence thresholds ($\tau_1 = 0.1, \tau_2 = 0.1$). Across both benchmarking platforms, the online router demonstrated deterministic, identical tier selections across the 600-prompt evaluation suite, as summarized in Table~\ref{tab:workload_tiers}.
+
+\begin{table}[htbp]
+\centering
+\caption{Workload Distribution and Task Assignment Across Candidate Model Tiers (600 Prompts Total).}
+\label{tab:workload_tiers}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llccl}
+\toprule
+\textbf{Tier} & \textbf{Model} & \textbf{VRAM} & \textbf{Routing Share} & \textbf{Assigned Benchmark Tasks} \\
+\midrule
+Tier 1 & \texttt{Llama-3.2-1B} & 1.3~GB & 17.0\% & SST-2 (binary sentiment), low-complexity fact extraction \\
+Tier 2 & \texttt{Llama-3.2-3B} & 2.0~GB & 49.7\% & CNN/DailyMail (summarization), MNLI (entailment), SQuAD v2.0 (QA) \\
+Tier 3 & \texttt{Llama-3.1-8B} & 4.9~GB & 33.3\% & GSM8K (multi-step math), HumanEval (code generation) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
 
 \begin{figure}[htbp]
 \centering
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx4060/router_tier_distribution.png}
-\caption*{(a) Platform A (RTX 4060)}
-\end{minipage}
-\hfill
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx3060ti/router_tier_distribution.png}
-\caption*{(b) Platform B (RTX 3060 Ti)}
-\end{minipage}
-\caption{Workload distribution of online routing decisions across lightweight (Tier 1), intermediate (Tier 2), and heavyweight (Tier 3) model tiers across 600 evaluation prompts.}
+\setlength{\fboxsep}{1pt}%
+\setlength{\fboxrule}{0.5pt}%
+\fbox{\includegraphics[width=0.60\linewidth]{figures/600_examples/rtx4060/router_tier_distribution.png}}
+\caption{Workload distribution of online routing decisions across lightweight (Tier 1), intermediate (Tier 2), and heavyweight (Tier 3) model tiers across 600 prompts on Platform~A (RTX 4060).}
 \label{fig:tier_distribution}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\setlength{\fboxsep}{1pt}%
+\setlength{\fboxrule}{0.5pt}%
+\fbox{\includegraphics[width=0.60\linewidth]{figures/600_examples/rtx3060ti/router_tier_distribution.png}}
+\caption{Workload distribution of online routing decisions on Platform~B (RTX 3060 Ti) across 600 prompts.}
+\label{fig:tier_distribution_rtx3060ti}
 \end{figure}
 
 Table~\ref{tab:per_dataset_comparison} presents the per-task dynamic energy consumption and quality scores for each benchmark suite across both platforms.
@@ -133,7 +144,7 @@ Table~\ref{tab:per_dataset_comparison} presents the per-task dynamic energy cons
 \resizebox{\linewidth}{!}{
 \begin{tabular}{llccccccc}
 \toprule
-\textbf{Benchmark} & \textbf{Complexity} & \textbf{Primary Tier} & \multicolumn{2}{c}{\textbf{Platform A ($E_{\text{net}}$, J)}} & \multicolumn{2}{c}{\textbf{Platform B ($E_{\text{net}}$, J)}} & \multicolumn{2}{c}{\textbf{Task Quality Score}} \\
+\textbf{Benchmark} & \textbf{Complexity} & \textbf{Tier} & \multicolumn{2}{c}{\textbf{Platform A ($E_{\text{net}}$, J)}} & \multicolumn{2}{c}{\textbf{Platform B ($E_{\text{net}}$, J)}} & \multicolumn{2}{c}{\textbf{Task Quality Score}} \\
 \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
 \textbf{Suite} & \textbf{Class} & \textbf{Assigned} & \textbf{Static 8B} & \textbf{Router} & \textbf{Static 8B} & \textbf{Router} & \textbf{Static 8B} & \textbf{Router} \\
 \midrule
@@ -150,25 +161,22 @@ HumanEval & High & Tier 3 (8B) & 460.2 & \textbf{436.7} ($-5.1\%$) & 336.5 & 115
 
 \begin{figure}[htbp]
 \centering
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx4060/dataset_energy_breakdown.png}
+\setlength{\fboxsep}{1pt}%
+\setlength{\fboxrule}{0.5pt}%
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/rtx4060/dataset_energy_breakdown.png}}
 \caption*{(a) Platform A (RTX 4060)}
-\end{minipage}
-\hfill
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx3060ti/dataset_energy_breakdown.png}
+\vspace{0.35cm}
+
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/rtx3060ti/dataset_energy_breakdown.png}}
 \caption*{(b) Platform B (RTX 3060 Ti)}
-\end{minipage}
 \caption{Task-level dynamic energy consumption across individual benchmark suites on both platforms (600 prompts total).}
 \label{fig:dataset_energy_both}
 \end{figure}
 
 The task-level breakdown illuminates several key architectural insights:
 \begin{enumerate}
-    \item \textbf{Substantial Savings on Intermediate Tasks}: On CNN/DailyMail summarization and MNLI classification, Tier~2 (\texttt{Llama-3.2-3B}) achieved massive dynamic energy savings of \textbf{47.1\% to 54.2\%} on Platform~A, and \textbf{62.8\% to 82.1\%} on Platform~B, while retaining over 90--93\% of the baseline task score.
-    \item \textbf{Low-Complexity Efficiency}: Routing SST-2 sentiment analysis to Tier~1 (\texttt{Llama-3.2-1B}) dropped dynamic inference energy from $33.0\text{ J}$ down to $10.0\text{ J}$ ($-69.7\%$) on the RTX 4060, demonstrating that sub-2B models provide near-zero energy footprints for high-throughput classification.
+    \item \textbf{Extreme Sensitivity of Low- and Medium-Complexity Tasks}: On intermediate tasks such as CNN/DailyMail summarization and MNLI classification, routing to Tier~2 (\texttt{Llama-3.2-3B}) yielded dynamic energy reductions of \textbf{47.1\% to 54.2\%} on Platform~A and \textbf{62.8\% to 82.1\%} on Platform~B. Similarly, routing SST-2 to Tier~1 (\texttt{Llama-3.2-1B}) dropped dynamic energy by \textbf{69.7\%} on Platform~A while maintaining high task fidelity.
+    \item \textbf{Generational Disparities on Long-Sequence Tasks}: On high-complexity tasks (GSM8K and HumanEval), the older Ampere silicon (Platform~B) consumed substantially more active power during prolonged chain-of-thought generation, whereas the TSMC 4N architecture maintained superior dynamic power containment.
 \end{enumerate}
 
 \subsection{Microarchitectural Scaling Analysis (TSMC 4N vs. Samsung 8nm)}
@@ -181,26 +189,37 @@ To quantify silicon process node efficiency gains across GPU microarchitectures,
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\linewidth]{figures/600_examples/cross_platform/cross_platform_scaling_eta.png}
+\setlength{\fboxsep}{1pt}%
+\setlength{\fboxrule}{0.5pt}%
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/cross_platform/cross_platform_scaling_eta.png}}
 \caption{Empirical Microarchitectural Energy Scaling Ratio ($\eta$) comparing net dynamic inference energy between Platform~B (Ampere Samsung 8nm) and Platform~A (Ada Lovelace TSMC 4N) across the 600-prompt benchmark.}
 \label{fig:cross_platform_scaling}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\setlength{\fboxsep}{1pt}%
+\setlength{\fboxrule}{0.5pt}%
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/cross_platform/cross_platform_joules_per_token.png}}
+\caption{Cross-platform energy efficiency measured in joules per generated token for the static 8B baseline and adaptive router across 600 prompts.}
+\label{fig:cross_platform_joules_per_token}
 \end{figure}
 
 As shown in Figure~\ref{fig:cross_platform_scaling}:
 \begin{itemize}
     \item Under static 8B serving, the empirical scaling ratio is:
     \begin{equation}
-    \eta_{\text{Static Baseline}} = \frac{204,685.71\text{ J}}{121,253.58\text{ J}} = \mathbf{1.688\times}
+    \eta_{\text{Static Baseline}} = \frac{204,685.71\text{ J}}{121,253.58\text{ J}} = 1.688\times
     \end{equation}
     The older Ampere Samsung 8nm architecture consumed nearly \textbf{1.69 times more dynamic electrical energy} to process the identical static 8B workload than the Ada Lovelace TSMC 4N node.
     \item Under adaptive complexity routing, the empirical scaling ratio is:
     \begin{equation}
-    \eta_{\text{Adaptive Router}} = \frac{169,965.79\text{ J}}{151,479.46\text{ J}} = \mathbf{1.122\times}
+    \eta_{\text{Adaptive Router}} = \frac{169,965.79\text{ J}}{151,479.46\text{ J}} = 1.122\times
     \end{equation}
     Dynamic routing significantly compresses the microarchitectural energy disparity from $1.688\times$ down to $1.122\times$.
 \end{itemize}
 
-\textbf{Core Architectural Takeaway}: While hardware process generational shrinks (TSMC 4N vs. Samsung 8nm) deliver a $1.69\times$ silicon-level efficiency gain under uniform static workloads, \textbf{dynamic complexity routing substantially bridges this hardware gap, reducing the cross-platform energy disparity to just $1.12\times$ while simultaneously cutting energy consumption on both individual platforms}. Software-level query complexity routing and hardware-level silicon scaling are mutually reinforcing.
+\textbf{Core Architectural Takeaway}: While hardware process generational shrinks (TSMC 4N vs. Samsung 8nm) deliver a $1.69\times$ silicon-level efficiency gain under static 8B serving, \textbf{dynamic complexity routing substantially bridges this hardware gap, reducing the cross-platform energy disparity to just $1.12\times$ while simultaneously cutting energy consumption on both individual platforms}. Software-level query complexity routing and hardware-level silicon scaling are mutually complementary.
 
 \subsection{Serving Latency and Host CPU Router Overhead}
 \label{subsec:latency_results}
@@ -210,22 +229,18 @@ Across both platforms, online feature extraction (lexical heuristics and 384-dim
     \item \textbf{Router Overhead}: Mean CPU latency was $\Delta t_{\text{route}} = 22.79\text{ ms}$ on Platform~A and $18.61\text{ ms}$ on Platform~B.
     \item \textbf{Serving Latency Reduction}: Adaptive routing reduced end-to-end serving latency by \textbf{11.55\%} ($5.774\text{ s}$ vs. $6.528\text{ s}$) on Platform~B and improved Time-to-First-Token (TTFT) by \textbf{8.07\%} on Platform~A and \textbf{8.24\%} on Platform~B.
 \end{itemize}
+Because lightweight models execute much faster on the GPU tensor cores, downstream execution latency savings vastly exceed the $\sim 18\text{--}23\text{ ms}$ CPU routing time, improving user-perceived responsiveness while saving power.
 
 \begin{figure}[htbp]
 \centering
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx4060/latency_profile.png}
+\setlength{\fboxsep}{1pt}%
+\setlength{\fboxrule}{0.5pt}%
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/rtx4060/latency_profile.png}}
 \caption*{(a) Platform A (RTX 4060)}
-\end{minipage}
-\hfill
-\begin{minipage}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/600_examples/rtx3060ti/latency_profile.png}
-\caption*{(b) Platform B (RTX 3060 Ti)}
-\end{minipage}
-\caption{Serving latency profiles (TTFT and end-to-end latency) for the static Tier 3 baseline and adaptive router across both GPU platforms.}
-\label{fig:latency_both}
-\end{figure}
+\vspace{0.35cm}
 
-Because lightweight models execute much faster on the GPU tensor cores, downstream execution latency savings vastly exceed the $\sim 18\text{--}23\text{ ms}$ CPU routing time, improving user-perceived responsiveness while saving significant electrical power.
+\fbox{\includegraphics[width=0.75\linewidth]{figures/600_examples/rtx3060ti/latency_profile.png}}
+\caption*{(b) Platform B (RTX 3060 Ti)}
+\caption{Serving latency profiles for the static Tier~3 baseline and adaptive router across both GPU platforms.}
+\label{fig:cross_platform_latency}
+\end{figure}
