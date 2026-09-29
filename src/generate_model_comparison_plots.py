@@ -38,11 +38,26 @@ def load_runs(gpu_slug):
     runs = []
     for profile, label in PROFILES.items():
         profile_dir = os.path.join(RESULTS_ROOT, profile)
-        with open(os.path.join(profile_dir, "summary_metrics.json"), encoding="utf-8") as handle:
+        if not os.path.exists(profile_dir):
+            continue
+        sum_path = os.path.join(profile_dir, "summary_metrics.json")
+        if not os.path.exists(sum_path):
+            continue
+        with open(sum_path, encoding="utf-8") as handle:
             summary = json.load(handle)
-        static = pd.read_csv(os.path.join(profile_dir, gpu_slug, "static_tier_baselines.csv"))
-        routed = pd.read_csv(os.path.join(profile_dir, gpu_slug, "router_evaluation.csv"))
-        runs.append({"profile": label, "summary": summary, "static": static, "routed": routed})
+
+        static_path = os.path.join(profile_dir, gpu_slug, "static_tier_baselines.csv")
+        if not os.path.exists(static_path):
+            static_path = os.path.join(profile_dir, "static_tier_baselines.csv")
+
+        routed_path = os.path.join(profile_dir, gpu_slug, "router_evaluation.csv")
+        if not os.path.exists(routed_path):
+            routed_path = os.path.join(profile_dir, "router_evaluation.csv")
+
+        if os.path.exists(static_path) and os.path.exists(routed_path):
+            static = pd.read_csv(static_path)
+            routed = pd.read_csv(routed_path)
+            runs.append({"profile": label, "summary": summary, "static": static, "routed": routed})
     return runs
 
 

@@ -70,3 +70,24 @@ $$\eta = \frac{E_{\text{net}}(\text{Platform B: RTX 3060 Ti})}{E_{\text{net}}(\t
 - **Tier 2 (3B)**: 298 queries (**49.7%**)
 - **Tier 3 (8B)**: 200 queries (**33.3%**)
 - **Total Offloaded to Smaller Tiers**: **66.7%**
+
+---
+
+## 6. Multi-Model Tier Comparison: Meta Llama vs. Alibaba Qwen 2.5 (6 Models Across 3 Tiers)
+
+To identify the optimal model architecture for each tier within the 8 GB consumer VRAM boundary, we evaluated a head-to-head matrix of two models per tier (six models total) on Platform A (RTX 4060):
+
+| Tier | Candidate Model | Family | Scale | Precision | VRAM | Dynamic Energy $E_{\text{net}}$ | Energy Intensity | Target Quality | Overall Quality | Latency | Quality / kJ | Recommendation |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Tier 1** | `Llama-3.2-1B` | Llama | 1.24B | Q8_0 | 1.3 GB | $62.27\text{ J}$ | $0.9741\text{ J/tok}$ | $75.0\%$ | $69.4\%$ | $5.216\text{ s}$ | $11.14$ | Candidate |
+| **Tier 1** | `Qwen-2.5-1.5B` | Qwen | 1.54B | Q4_K_M | 1.0 GB | **$54.47\text{ J}$** ($-12.5\%$) | **$0.5816\text{ J/tok}$** ($-40.3\%$) | **$100.0\%$** ($+25.0\%$) | **$77.6\%$** | **$3.540\text{ s}$** ($-32.1\%$) | **$14.25$** | ⭐ **Recommended Tier 1** |
+| **Tier 2** | `Llama-3.2-3B` | Llama | 3.21B | Q4_K_M | 2.0 GB | $118.34\text{ J}$ | $1.6576\text{ J/tok}$ | $32.4\%$ | $77.5\%$ | $10.881\text{ s}$ | $6.55$ | Candidate |
+| **Tier 2** | `Qwen-2.5-3B` | Qwen | 3.09B | Q4_K_M | 1.9 GB | **$100.19\text{ J}$** ($-15.3\%$) | **$0.6114\text{ J/tok}$** ($-63.1\%$) | **$60.2\%$** ($+27.8\%$) | **$86.7\%$** | **$4.326\text{ s}$** ($-60.2\%$) | **$8.66$** | ⭐ **Recommended Tier 2** |
+| **Tier 3** | `Llama-3.1-8B` | Llama | 8.03B | Q4_K_M | 4.9 GB | **$209.13\text{ J}$** ($-27.0\%$) | $2.3903\text{ J/tok}$ | **$100.0\%$** | $86.3\%$ | **$10.741\text{ s}$** ($-14.6\%$) | **$4.13$** | ⭐ **Recommended Tier 3** |
+| **Tier 3** | `Qwen-2.5-7B` | Qwen | 7.61B | Q4_K_M | 4.7 GB | $286.41\text{ J}$ | **$1.7958\text{ J/tok}$** | **$100.0\%$** | **$87.0\%$** | $12.573\text{ s}$ | $3.04$ | Candidate |
+
+### Key Takeaways on Model Tier Selection:
+1. **Tier 1 Optimal Model**: `Qwen-2.5-1.5B` dominates `Llama-3.2-1B` in every single metric: **$12.5\%$ lower dynamic energy**, **$40.3\%$ lower Joules/token**, **$32.1\%$ faster serving latency**, and perfect **$100\%$ target accuracy** on SST-2 and SQuAD v2.0.
+2. **Tier 2 Optimal Model**: `Qwen-2.5-3B` is significantly superior to `Llama-3.2-3B`, cutting dynamic energy by **$15.3\%$**, slashing energy intensity by **$63.1\%$**, running **$2.5\times$ faster** ($4.33\text{ s}$ vs. $10.88\text{ s}$), and doubling domain quality retention on summarization and NLI ($60.2\%$ vs. $32.4\%$).
+3. **Tier 3 Optimal Model**: `Llama-3.1-8B` is the most energy-efficient foundation baseline: while both achieve **$100\%$** on GSM8K and HumanEval, `Llama-3.1-8B` consumes **$27.0\%$ less dynamic energy** ($209.13\text{ J}$ vs. $286.41\text{ J}$) and delivers **$14.6\%$ faster serving latency** than `Qwen-2.5-7B` due to tighter, non-redundant reasoning chains.
+

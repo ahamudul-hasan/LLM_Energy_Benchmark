@@ -194,26 +194,24 @@ ollama ps
 
 ---
 
-## One-Click Benchmark Runner (Windows / RTX 3060 Ti / RTX 4060)
+## One-Click Benchmark Runners (Windows / RTX 3060 Ti / RTX 4060)
 
-For immediate, automated execution on Windows with an NVIDIA GPU (e.g. RTX 3060 Ti or RTX 4060):
+### 1. Adaptive Router vs. Static Baseline Benchmark (Full Workload)
+* **RTX 3060 Ti (Platform B):** `.\run_benchmark_rtx3060ti_full.bat`
+* **RTX 4060 (Platform A):** `.\run_benchmark_rtx4060_full.bat`
 
-Simply double-click:
-```cmd
-run_benchmark_rtx3060ti.bat
-```
-Or run from PowerShell / Command Prompt:
-```cmd
-.\run_benchmark_rtx3060ti.bat
-```
+### 2. Multi-Model Tier Matrix Benchmark (6 Models Across 3 Tiers)
+To evaluate the 2 candidate models per tier (Meta Llama vs. Alibaba Qwen 2.5) and determine the optimal model for each tier:
+* **RTX 3060 Ti:** Double-click or run `.\run_model_matrix_rtx3060ti.bat`
+* **RTX 4060:** Double-click or run `.\run_model_matrix_rtx4060.bat`
 
-**What the script does automatically:**
+**What the scripts do automatically:**
 1. Verifies Python 3 and auto-installs missing dependencies (`nvidia-ml-py`, `matplotlib`, `sentence-transformers`, `scikit-learn`, `pandas`).
-2. Checks Ollama service and auto-pulls any missing models (`llama3.2:1b`, `llama3.2:3b`, `llama3.1:8b`).
-3. Offers a choice between **Validation Run** (12 prompts, ~4 mins), **Medium Run** (60 prompts, ~15 mins), or **Full Benchmark** (600 prompts, ~2 hrs) with a 10s default timeout.
+2. Checks Ollama service and auto-pulls any missing models across all tiers (`llama3.2:1b`, `llama3.2:3b`, `llama3.1:8b`, `qwen2.5:1.5b`, `qwen2.5:3b`, `qwen2.5:7b`).
+3. Offers a workload size menu: **Validation Run** (12 prompts, ~4-5 mins), **Medium Matrix** (60 prompts, ~20 mins), or **Full Benchmark** (600 prompts, ~2-3 hrs).
 4. Profiles resting GPU idle power $P_{\text{idle}}$ and executes live inference with 50 ms NVML power integration.
-5. Generates high-resolution PNG charts in `figures/` and cross-platform scaling ratio ($\eta = E_{\text{3060Ti}} / E_{\text{4060}}$).
-6. Automatically pops open the `figures/` folder in Windows Explorer upon completion.
+5. Generates high-resolution head-to-head comparison plots in `figures/model_comparisons/<gpu>/`.
+6. Exports Markdown and LaTeX comparative tables and opens the figures folder in Windows Explorer upon completion.
 
 ---
 

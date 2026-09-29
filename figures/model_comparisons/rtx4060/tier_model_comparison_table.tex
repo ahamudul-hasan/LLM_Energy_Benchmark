@@ -1,0 +1,22 @@
+\begin{table}[htbp]
+\centering
+\caption{Head-to-Head Comparative Evaluation of Candidate Models per Tier (6 Models Total Across 8\,GB VRAM Budget).}
+\label{tab:tier_model_comparison}
+\small
+\resizebox{\linewidth}{!}{
+\begin{tabular}{llcccccccc}
+\toprule
+\textbf{Tier} & \textbf{Candidate Model} & \textbf{Family} & \textbf{Params} & \textbf{VRAM} & \textbf{$E_{\text{net}}$ (J)} & \textbf{J/tok} & \textbf{Target Acc.} & \textbf{Latency (s)} & \textbf{Evaluation} \\
+\midrule
+Tier 1 & \texttt{Llama-3.2-1B} & Llama & 1.24B & 1.3\,GB & 62.27 & 0.9741 & 75.0\% & 5.216 & Candidate \\
+ & \texttt{Qwen-2.5-1.5B} & Qwen & 1.54B & 1.0\,GB & 54.47 & 0.5816 & 100.0\% & 3.54 & Candidate \\
+\midrule
+Tier 2 & \texttt{Llama-3.2-3B} & Llama & 3.21B & 2.0\,GB & 118.34 & 1.6576 & 32.4\% & 10.881 & Candidate \\
+ & \texttt{Qwen-2.5-3B} & Qwen & 3.09B & 1.9\,GB & 100.19 & 0.6114 & 60.2\% & 4.326 & Candidate \\
+\midrule
+Tier 3 & \texttt{Llama-3.1-8B} & Llama & 8.03B & 4.9\,GB & 209.13 & 2.3903 & 100.0\% & 10.741 & Candidate \\
+ & \texttt{Qwen-2.5-7B} & Qwen & 7.61B & 4.7\,GB & 286.41 & 1.7958 & 100.0\% & 12.573 & Candidate \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

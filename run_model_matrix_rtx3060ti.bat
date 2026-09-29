@@ -1,9 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
-title LLM Energy Benchmark Matrix - RTX 4060 (Platform A)
+title LLM Energy Benchmark Matrix - RTX 3060 Ti (Platform B)
 
 echo ===============================================================================
-echo      LLM ENERGY BENCHMARK: MODEL MATRIX - PLATFORM A (RTX 4060)
+echo      LLM ENERGY BENCHMARK: MODEL MATRIX - PLATFORM B (RTX 3060 Ti)
 echo      6 Models Across 3 Tiers (Meta Llama vs Alibaba Qwen 2.5)
 echo      United International University - Dept. of CSE
 echo ===============================================================================
@@ -43,7 +43,7 @@ if errorlevel 1 (
 
 curl -s http://localhost:11434/api/tags >nul 2>&1
 if errorlevel 1 (
-    echo Starting Ollama service...
+    echo Ollama server is not running. Starting Ollama in background...
     start "Ollama Server" /min cmd /c "ollama serve > ollama_server.log 2>&1"
     for /l %%i in (1,1,15) do (
         curl -s http://localhost:11434/api/tags >nul 2>&1
@@ -106,7 +106,7 @@ echo.
 
 :: 7. Execute Benchmark Matrix
 echo ===============================================================================
-echo   RUNNING LIVE GPU BENCHMARK (RTX 4060)
+echo   RUNNING LIVE GPU BENCHMARK (RTX 3060 Ti)
 echo   50 ms NVML power profiling, quiescent resting baseline active.
 echo ===============================================================================
 
@@ -119,9 +119,9 @@ if errorlevel 1 (
 
 :: 8. Generate Visualizations and Head-to-Head Report
 echo.
-echo Generating RTX 4060 figures and head-to-head tier reports...
-python -u src\generate_model_comparison_plots.py --gpu rtx4060
-python -u src\compare_tier_models.py --gpu rtx4060
+echo Generating RTX 3060 Ti figures and head-to-head tier reports...
+python -u src\generate_model_comparison_plots.py --gpu rtx3060ti
+python -u src\compare_tier_models.py --gpu rtx3060ti
 if errorlevel 1 (
     echo [WARNING] Comparison plot script had an issue.
 )
@@ -130,14 +130,14 @@ echo.
 echo ===============================================================================
 echo   BENCHMARK COMPLETE!
 echo   Results: data\results\model_comparisons\*
-echo   Figures: figures\model_comparisons\rtx4060\
-echo   Report : figures\model_comparisons\rtx4060\tier_comparison_report.md
-echo   Table  : figures\model_comparisons\rtx4060\tier_model_comparison_table.tex
+echo   Figures: figures\model_comparisons\rtx3060ti\
+echo   Report : figures\model_comparisons\rtx3060ti\tier_comparison_report.md
+echo   Table  : figures\model_comparisons\rtx3060ti\tier_model_comparison_table.tex
 echo ===============================================================================
 echo.
 
-if exist figures\model_comparisons\rtx4060 (
-    start explorer figures\model_comparisons\rtx4060
+if exist figures\model_comparisons\rtx3060ti (
+    start explorer figures\model_comparisons\rtx3060ti
 )
 
 pause
